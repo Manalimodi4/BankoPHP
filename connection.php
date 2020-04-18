@@ -75,7 +75,9 @@ function db_signin($username, $password) {
         }
     }
 }
+function joinRoom($invite,$manali,$id){
 
+}
 function console($var) {
     echo '<script>console.log("PHP: "+"'.json_encode($var).'")</script>';
 }

@@ -1,7 +1,12 @@
 <?php
 session_start();
-// if(!isset($_SESSION['player']))
-// header("Location: index.php");
+?>
+<?php
+if(isset($_POST['createRoom']))
+{
+    $_SESSION['roomID']=rand(100000,999999);
+    header("Location: room.php");
+}
 ?>
 
 
@@ -52,10 +57,10 @@ session_start();
                                 <div class="card rounded-xl py-3 rounded-lg shadow-lg">
                                     <div class="card-body ">
                                         <form>
-                                            <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
+                                            <form action="../room.php" method="POST">
                                                 <div class="form-group">
                                                     <label for="roomId">Invite ID</label>
-                                                    <input type="text" name="invite" class="form-control" id="invite" aria-describedby="inviteHelp" required>
+                                                    <input type="number" name="invite" class="form-control" id="invite" aria-describedby="inviteHelp" required>
                                                 </div>
                                                 <input type="submit" name="joinRoom" value="Join Room" class="btn btn-primary btn-block">
                                             </form>
