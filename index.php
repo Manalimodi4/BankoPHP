@@ -1,3 +1,11 @@
+<?php
+require_once 'connection.php';
+
+if(isset($_POST['signin'])) {
+    $response = db_signin($_POST['username'], $_POST['password']);
+}
+?>
+
 <!doctype html>
 <html lang="en" class="h-100">
 
@@ -34,14 +42,21 @@
                                 <form action="<?php echo $_SERVER['PHP_SELF']?>" method="POST">
                                     <div class="form-group">
                                         <label for="username">Username</label>
-                                        <input type="text" class="form-control" id="username" aria-describedby="usernameHelp" required>
+                                        <input type="text" name="username" class="form-control" id="username" aria-describedby="usernameHelp" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputPassword">Password</label>
-                                        <input type="password" class="form-control" id="exampleInputPassword" required>
+                                        <input type="password" name="password" class="form-control" id="exampleInputPassword" required>
+                                        <small id="passwordHelp" class="form-text text-muted text-danger" style="display: none">Incorrect Password</small>
                                     </div>
+                                    <script>
+                                        var e  = document.querySelector("#passwordHelp");
+                                        if(typeof(invalidPassword) != "undefined") {
+                                            e.style.display = "block";
+                                        }
+                                        </script>
                                     <div class="form-group pt-2 py-0">
-                                        <button type="submit" class="btn btn-primary btn-block">Log In</button>
+                                        <input type="submit" name="signin" class="btn btn-primary btn-block" value="Log In">
                                     </div>
                                 </form>
                                 </div>

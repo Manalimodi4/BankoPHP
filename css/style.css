@@ -2,14 +2,24 @@
     font-size: 2rem !important;
 }
 
+.fs-15 {
+    font-size: 1.5rem !important;
+}
+
+.fs-1 {
+    font-size: 1rem !important;
+}
+
 body {
     background: linear-gradient(135deg, #708090 21px, #d9ecff 22px, #d9ecff 24px, transparent 24px, transparent 67px, #d9ecff 67px, #d9ecff 69px, transparent 69px), linear-gradient(225deg, #708090 21px, #d9ecff 22px, #d9ecff 24px, transparent 24px, transparent 67px, #d9ecff 67px, #d9ecff 69px, transparent 69px)0 64px;
     background-color: #708090;
     background-size: 64px 128px;
 }
+
 .bg-white {
     background-color: #fff !important;
 }
+
 .rounded-xl {
     border-radius: 2rem !important;
 }
