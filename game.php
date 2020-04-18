@@ -49,7 +49,6 @@ if(isset($_POST['createRoom']))
                                     <?php echo $_SESSION['player']['amount'] ?>
                                 </div>
                                     <div class="card-body my-2 ">
-                                        <form>
                                             <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
                                                 <input type="submit" name="createRoom" value="Create Room" class="btn btn-info btn-block">
                                             </form>
