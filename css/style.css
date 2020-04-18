@@ -23,3 +23,12 @@ body {
 .rounded-xl {
     border-radius: 2rem !important;
 }
+
+.playerCard {
+    padding: 5px;
+    display: flex;
+}
+
+.playerName {
+    margin-right: 5px;
+}

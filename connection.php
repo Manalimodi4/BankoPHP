@@ -5,7 +5,7 @@ function db_connect() {
      // Try and connect to the database, if a connection has not been established yet
     if(!isset($connection)) {
         // Load configuration as an array. Use the actual location of your configuration file
-        $config = parse_ini_file('config.ini');
+        $config = parse_ini_file('db/config.ini');
         $connection = mysqli_connect($config['server'],$config['username'],$config['password'],$config['database']);
         // If connection was not successful, handle the error
             if($connection === false) {
@@ -39,6 +39,19 @@ function db_select($query) {
     }
     return $rows;
 }
+
+function db_select2($query) {
+    $rows = array();
+    $result = db_query($query);
+    // If query failed, return `false`
+    if($result === false) {
+        return false;
+    }
+    // If query was successful, retrieve all the rows into an array
+    $rows = mysqli_fetch_assoc($result);
+    return $rows;
+}
+
 function db_quote($value) {
     $connection = db_connect();
     return "'" . mysqli_real_escape_string($connection,$value) . "'";

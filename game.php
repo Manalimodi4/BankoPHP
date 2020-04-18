@@ -1,15 +1,39 @@
 <?php
 session_start();
-?>
-<?php
-if(isset($_POST['createRoom']))
-{
-    $_SESSION['roomID']=rand(100000,999999);
-    header("Location: room.php");
+require 'connection.php';
+if (isset($_POST['createRoom'])) {
+    // $_SESSION['roomID'] = $_POST['roomID'];
+    $roomID = db_quote($_POST['roomID']);
+    $username = db_quote($_SESSION['player']['username']);
+    $query = "UPDATE `accounts` SET `roomID` =" . $roomID . " WHERE `username` =" . $username;
+    $result = db_query($query);
+    if ($result) {
+        // $query = "SELECT * FROM `accounts` WHERE `username` = " . $username;
+        // $result = db_select($query);
+        // $_SESSION['player'] = $result[0];
+        $_SESSION['player']['roomID'] = $_POST['roomID'];
+        header("Location: room.php");
+    }
+}
+
+if (isset($_POST['joinRoom'])) {
+    $roomID = db_quote($_POST['roomID']);
+    $username = db_quote($_SESSION['player']['username']);
+    $query = "SELECT * FROM `accounts` WHERE `roomID` = " . $roomID;
+    $result = db_select($query);
+    if ($result) {
+        // roomID is valid, thus update the same in Enterer's DB
+        $query = "UPDATE `accounts` SET `roomID` =" . $roomID . " WHERE `username` =" . $username;
+        $result = db_query($query);
+        if ($result) {
+            $_SESSION['player']['roomID'] = $_POST['roomID'];
+            header("Location: room.php");
+        }
+    } else {
+        // roomID is invalid, deal with this later
+    }
 }
 ?>
-
-
 
 <!doctype html>
 <html lang="en" class="h-100">
@@ -48,21 +72,21 @@ if(isset($_POST['createRoom']))
                                     Amount:
                                     <?php echo $_SESSION['player']['amount'] ?>
                                 </div>
-                                    <div class="card-body my-2 ">
-                                            <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
-                                                <input type="submit" name="createRoom" value="Create Room" class="btn btn-info btn-block">
-                                            </form>
+                                <div class="card-body my-2 ">
+                                    <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
+                                        <input type="hidden" name="roomID" value="<?php echo rand(100000, 999999); ?>" required>
+                                        <input type="submit" name="createRoom" value="Create Room" class="btn btn-info btn-block">
+                                    </form>
                                 </div>
                                 <div class="card rounded-xl py-3 rounded-lg shadow-lg">
-                                    <div class="card-body ">
-                                        <form>
-                                            <form action="../room.php" method="POST">
-                                                <div class="form-group">
-                                                    <label for="roomId">Invite ID</label>
-                                                    <input type="number" name="invite" class="form-control" id="invite" aria-describedby="inviteHelp" required>
-                                                </div>
-                                                <input type="submit" name="joinRoom" value="Join Room" class="btn btn-primary btn-block">
-                                            </form>
+                                    <div class="card-body">
+                                        <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
+                                            <div class="form-group">
+                                                <label for="roomID">Invite ID</label>
+                                                <input type="number" name="roomID" class="form-control" id="roomID" aria-describedby="inviteHelp" required>
+                                            </div>
+                                            <input type="submit" name="joinRoom" value="Join Room" class="btn btn-primary btn-block">
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -78,6 +102,7 @@ if(isset($_POST['createRoom']))
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="js/main.js"></script>
 </body>
 
 </html>
