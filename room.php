@@ -9,8 +9,8 @@ require_once 'components/header.php';
     <section class="flex-fill align-self-center">
         <div class="container-fluid ">
             <div class="row">
-                <div class="col-md-4 offset-md-1 col-sm-4 offset-sm-1">
-                    <div class="card rounded-xl py-3rounded-lg shadow-lg">
+                <div class="col-md-4 offset-md-1 col-sm-6 offset-sm-1">
+                    <div class="card rounded-xl py-3rounded-lg shadow-lg mb-2">
                         <div class="card-body ">
                             <div class="display-4 fs-2 px-2">
                                 Hey,<span id="username"><?php echo $_SESSION['player']['username'] ?></span>
