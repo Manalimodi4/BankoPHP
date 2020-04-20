@@ -128,6 +128,9 @@ function subScore(el) {
 }
 
 function startObservingRoom() {
+    deck = getDeck();
+    shuffle();
+    renderDeck();
     roomID = document.querySelector("#roomID");
     roomID = roomID.textContent;
     window.setInterval(function() {
@@ -142,7 +145,10 @@ function observeRoom(roomID) {
         dataType: 'json', // type of response data
         //timeout: 500,     // timeout milliseconds
         success: function(data, status, xhr) { // success callback function
-            console.log(data);
+            players = JSON.parse(data.players);
+            // console.log(players[0].username);
+            console.log(data.isPlaying);
+
         },
         error: function(textStatus, errorMessage) { // error callback 
             // console.log(jqxhr);
