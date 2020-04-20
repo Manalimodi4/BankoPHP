@@ -9,7 +9,7 @@ require_once 'components/header.php';
     <section class="flex-fill align-self-center">
         <div class="container-fluid ">
             <div class="row">
-                <div class="col-md-4 offset-md-1 col-sm-6 offset-sm-1">
+                <div class=" col-lg-4 offset-lg-1 col-md-6 offset-md-1 col-sm-5">
                     <div class="card rounded-xl py-3rounded-lg shadow-lg mb-2">
                         <div class="card-body ">
                             <div class="display-4 fs-2 px-2">
@@ -19,24 +19,22 @@ require_once 'components/header.php';
                             </div>
                             <div class="card-body my-2 ">
                                 <div class="row px-0 mx-0 mt-2">
-                                    <div class="col-6">
-                                    <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
-                                        <input type="submit" name="inviteFriends" value="Invite Friends" class="btn btn-secondary mb-2 btn-block">
-                                    </form>
+                                    <div class="col-md-6">
+                                        <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
+                                            <input type="submit" name="inviteFriends" value="Invite Friends" class="btn btn-secondary mb-2 btn-block">
+                                        </form>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
+                                            <input type="submit" name="startGame" value="Start Game" class="btn btn-primary mb-2 btn-block">
+                                        </form>
+                                    </div>
                                 </div>
-                                <div class="col-6">
-                                    <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
-                                        <input type="submit" name="startGame" value="Start Game" class="btn btn-primary mb-2 btn-block">
-                                    </form>
-                                </div>
-                                </div>
-                                
-
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-5 col-sm-5">
+                <div class="col-md-5 col-sm-7">
                     <div class="card rounded-xl py-3rounded-lg shadow-lg">
                         <div class="card-body">
                             This Room:

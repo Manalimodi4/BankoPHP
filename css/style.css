@@ -33,6 +33,48 @@ body {
     margin-right: 5px;
 }
 
-animate {
+.animate {
     transform: scale(1);
+}
+
+.card1 {
+    padding: 10px;
+    border: solid 1px #808080;
+    background-color: white;
+    display: inline-block;
+    border-radius: 10px;
+    font-size: 14pt;
+    text-align: center;
+    color: black;
+    margin: 3px;
+    margin-right: 10px;
+}
+
+.card1+.card1 {
+    margin-left: 10px;
+    margin-right: 0px;
+}
+
+.card1 .value {
+    font-size: 15pt;
+    font-family: sans-serif;
+}
+
+.card1 .suit {
+    background-image: url('https://raw.githubusercontent.com/Manalimodi4/BancoGame/master/src/main/resources/static/card.png');
+    height: 100px;
+    width: 90px;
+}
+
+.card1 .diamonds {
+    background-position-y: 100px;
+}
+
+.card1 .hearts {
+    background-position-x: 90px;
+}
+
+.card1 .clubs {
+    background-position-x: 90px;
+    background-position-y: 100px;
 }

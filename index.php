@@ -11,7 +11,7 @@ require_once 'components/header.php';
         <section class="flex-fill align-self-center">
             <div class="container-fluid ">
                 <div class="row">
-                    <div class="col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-6 offset-sm-3">
+                    <div class="col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2">
                         <div class="card rounded-xl py-3 rounded-lg shadow-lg">
                             <div class="card-body ">
                                 <div class="px-0 px-md-4">

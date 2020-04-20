@@ -46,7 +46,7 @@ require_once 'components/header.php';
     <section class="flex-fill align-self-center">
         <div class="container-fluid ">
             <div class="row">
-                <div class="col-md-8 offset-md-2 col-sm-6 offset-sm-3">
+                <div class="col-md-8 offset-md-2 col-sm-8 offset-sm-2">
                     <div class="card rounded-xl py-3rounded-lg shadow-lg">
                         <div class="card-body ">
                             <div class="display-4 fs-2 px-2">
