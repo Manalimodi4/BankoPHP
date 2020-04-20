@@ -44,18 +44,6 @@ function db_select($query)
     return $rows;
 }
 
-function db_select2($query)
-{
-    $rows = array();
-    $result = db_query($query);
-    // If query failed, return `false`
-    if ($result === false) {
-        return false;
-    }
-    // If query was successful, retrieve all the rows into an array
-    $rows = mysqli_fetch_assoc($result);
-    return $rows;
-}
 
 function db_quote($value)
 {
@@ -98,9 +86,7 @@ function db_signin($username, $password)
         }
     }
 }
-function joinRoom($invite, $manali, $id)
-{
-}
+
 function console($var)
 {
     echo '<script>console.log("PHP: "+"' . json_encode($var) . '")</script>';

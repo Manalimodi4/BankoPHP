@@ -1,8 +1,29 @@
 <?php
+
+use function PHPSTORM_META\type;
+
 session_start();
 if (!isset($_SESSION['player']['roomID']))
     header("Location: game.php");
 require_once 'components/header.php';
+require_once 'connection.php';
+
+if (isset($_POST['startGame'])) {
+    @$roomID = db_quote($_SESSION['player']['roomID']);
+    $currentPlayerList = db_quote($_POST['currentPlayerList']);
+    @$isAdmin = db_quote($_SESSION['player']['isAdmin']);
+    @$isPlaying = $isAdmin;
+
+    $query = "INSERT INTO `rooms`
+            (roomID, players, isAdmin, isPlaying) VALUES 
+            (".$roomID." , ".$currentPlayerList." , ".$isAdmin." , ".$isPlaying.")
+    ";
+    $result = db_query($query);
+    if($result) {
+        $_SESSION['player']['isInGame'] = true;
+        header("Location: app/");
+    }
+}
 ?>
 
 <main class="h-100 d-flex">
@@ -19,32 +40,44 @@ require_once 'components/header.php';
                             </div>
                             <div class="card-body my-2 ">
                                 <div class="row px-0 mx-0 mt-2">
-                                    <div class="col-md-6">
-                                        <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
-                                            <input type="submit" name="inviteFriends" value="Invite Friends" class="btn btn-secondary mb-2 btn-block">
-                                        </form>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
-                                            <input type="submit" name="startGame" value="Start Game" class="btn btn-primary mb-2 btn-block">
-                                        </form>
-                                    </div>
+                                    <?php
+                                    if ($_SESSION['player']['isAdmin'] != "Room Owner")
+                                        echo '<div class="col-md-6">';
+                                    else
+                                        echo '<div class="col-md-12">';
+                                    ?>
+
+                                    <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
+                                        <input type="submit" name="inviteFriends" value="Invite Friends" class="btn btn-secondary mb-2 btn-block">
+                                    </form>
+                                </div>
+                                <div class="col-md-6">
+                                    <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
+                                        <input type="hidden" name="currentPlayerList" value="" id="currentPlayerList">
+                                        <?php
+                                        if ($_SESSION['player']['isAdmin'] != "Room Owner") {
+                                            echo '<input type="submit" name="startGame" value="Start Game" class="btn btn-primary mb-2 btn-block">';
+                                        }
+                                        ?>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-5 col-sm-7">
-                    <div class="card rounded-xl py-3rounded-lg shadow-lg">
-                        <div class="card-body">
-                            This Room:
-                            <div id="playerList" class="mt-2">
+            </div>
+            <div class="col-md-5 col-sm-7">
+                <div class="card rounded-xl py-3rounded-lg shadow-lg">
+                    <div class="card-body">
+                        This Room:
+                        <?php echo $_SESSION['player']['isAdmin']?> will start the game.
+                        <div id="playerList" class="mt-2">
 
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
         </div>
         </div>
     </section>
@@ -71,6 +104,7 @@ require_once 'components/header.php';
         setTimeout(function() {
             forceKick(username);
         }, 300000);
+
     });
 </script>
 </body>

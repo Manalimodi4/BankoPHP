@@ -19,6 +19,7 @@ if (isset($_POST['createRoom'])) {
         // $result = db_select($query);
         // $_SESSION['player'] = $result[0];
         $_SESSION['player']['roomID'] = $_POST['roomID'];
+        $_SESSION['player']['isAdmin'] = $_SESSION['player']['username'];
         header("Location: room.php");
     }
 }
@@ -34,6 +35,7 @@ if (isset($_POST['joinRoom'])) {
         $result = db_query($query);
         if ($result) {
             $_SESSION['player']['roomID'] = $_POST['roomID'];
+            $_SESSION['player']['isAdmin'] = "Room Owner";
             header("Location: room.php");
         }
     } else {
