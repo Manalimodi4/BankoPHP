@@ -126,4 +126,5 @@ function subScore(el) {
         pot.innerText = parseInt(pot.innerText) - 10;
 }
 
+
 window.onload = load;

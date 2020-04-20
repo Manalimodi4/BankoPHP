@@ -4,8 +4,15 @@ require_once '../connection.php';
 if (isset($_POST['signin'])) {
     $response = db_signin($_POST['username'], $_POST['password']);
 }
-
 ?>
+<?php
+if($_SESSION('roomID') {
+ $query ="SELECT username,amount FROM `accounts`";
+ $result = db_select($query);
+ echo json_encode($result);  
+}               
+?>
+
 <!doctype html>
 <html lang="en" class="h-100">
 
@@ -19,6 +26,8 @@ if (isset($_POST['signin'])) {
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../css/style.css">
+    <!-- Datatable CSS -->
+    <link rel="stylesheet" href="cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
     <title>Banko Game</title>
 </head>
 
@@ -83,49 +92,54 @@ if (isset($_POST['signin'])) {
                         </div>
 
                     </div>
-                    <!-- <div class="col-md-3 pt-5">
+                    <div class="col-md-3 pt-5">
                         <div class="float-right d-md-none">
                             <button type="button" class="btn btn-dark px-3">View Board</button>
                         </div>
-                        <table class="table table-dark">
+                        <table id="accountsTable" class="display" cellspacing="0">
                             <thead>
                                 <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Amount</th>
+                                    <th>username</th>
+                                    <th>amount</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark</td>
-                                    <td>100</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Jacob</td>
-                                    <td>200</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>Larry</td>
-                                    <td>500</td>
-                                </tr>
                             </tbody>
                         </table>
-                    </div> -->
+                    </div>
                 </div>
             </div>
         </section>
     </main>
+     
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script src="../js/main.js"></script>
+<script type="text/javascript">
+$(document).ready(function()
+{
+    $(#accountsTable).dataTable({
+        "ajax":
+        {
+            "bprocessing":true,
+            "sAjaxSource": "app/index.php"
+            "type":"POST",
+            "contentType":"application/json",
+            "dataType":"json"
+        },
+        "aocolumns":[
+            {"mdata":"username"},
+            {"mdata":"amount"}
 
+        ]
+    });
+});
+
+</script>
 </body>
 
 </html>
