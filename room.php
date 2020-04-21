@@ -5,7 +5,7 @@ if (!isset($_SESSION['player']['roomID']))
 require_once 'components/header.php';
 require_once 'connection.php';
 
-if (isset($_POST['startGame'])) {        
+if (isset($_POST['startGame'])) {
     @$roomID = db_quote($_SESSION['player']['roomID']);
     $currentPlayerList = db_quote($_POST['currentPlayerList']);
     @$isAdmin = db_quote($_SESSION['player']['isAdmin']);
@@ -13,10 +13,11 @@ if (isset($_POST['startGame'])) {
 
     $query = "INSERT INTO `rooms`
             (roomID, players, isAdmin, isPlaying) VALUES 
-            (".$roomID." , ".$currentPlayerList." , ".$isAdmin." , ".$isPlaying.")
+            (" . $roomID . " , " . $currentPlayerList . " , " . $isAdmin . " , " . $isPlaying . " )
     ";
+
     $result = db_query($query);
-    if($result) {
+    if ($result) {
         $_SESSION['player']['isInGame'] = true;
         header("Location: app/");
     }
@@ -51,6 +52,7 @@ if (isset($_POST['startGame'])) {
                                 <div class="col-md-6">
                                     <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
                                         <input type="hidden" name="currentPlayerList" value="" id="currentPlayerList">
+                                        
                                         <?php
                                         if ($_SESSION['player']['isAdmin'] != "Room Owner") {
                                             echo '<input type="submit" name="startGame" value="Start Game" class="btn btn-primary mb-2 btn-block">';
@@ -67,15 +69,13 @@ if (isset($_POST['startGame'])) {
                 <div class="card rounded-xl py-3rounded-lg shadow-lg">
                     <div class="card-body">
                         This Room:
-                        <?php echo $_SESSION['player']['isAdmin']?> will start the game.
+                        <?php echo $_SESSION['player']['isAdmin'] ?> will start the game.
                         <div id="playerList" class="mt-2">
 
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        </div>
         </div>
     </section>
 </main>
@@ -102,6 +102,7 @@ if (isset($_POST['startGame'])) {
             forceKick(username);
         }, 300000);
 
+        roomStartEventListener(roomID, username);
     });
 </script>
 </body>
