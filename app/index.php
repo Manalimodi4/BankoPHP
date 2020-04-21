@@ -5,14 +5,6 @@ if (isset($_POST['signin'])) {
     $response = db_signin($_POST['username'], $_POST['password']);
 }
 ?>
-<?php
-if($_SESSION('roomID') {
- $query ="SELECT username,amount FROM `accounts`";
- $result = db_select($query);
- echo json_encode($result);  
-}               
-?>
-
 <!doctype html>
 <html lang="en" class="h-100">
 
@@ -96,15 +88,6 @@ if($_SESSION('roomID') {
                         <div class="float-right d-md-none">
                             <button type="button" class="btn btn-dark px-3">View Board</button>
                         </div>
-                        <table id="accountsTable" class="display" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>username</th>
-                                    <th>amount</th>
-                                </tr>
-                            </thead>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </div>
@@ -119,27 +102,6 @@ if($_SESSION('roomID') {
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script src="../js/main.js"></script>
-<script type="text/javascript">
-$(document).ready(function()
-{
-    $(#accountsTable).dataTable({
-        "ajax":
-        {
-            "bprocessing":true,
-            "sAjaxSource": "app/index.php"
-            "type":"POST",
-            "contentType":"application/json",
-            "dataType":"json"
-        },
-        "aocolumns":[
-            {"mdata":"username"},
-            {"mdata":"amount"}
-
-        ]
-    });
-});
-
-</script>
 </body>
 
 </html>
