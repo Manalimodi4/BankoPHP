@@ -2,9 +2,6 @@
 session_start();
 require_once '../connection.php';
 
-if (isset($_POST['signin'])) {
-    $response = db_signin($_POST['username'], $_POST['password']);
-}
 $roomID = db_quote($_SESSION['player']['roomID']);
 $query = "SELECT * FROM `rooms` WHERE `roomID` =".$roomID;
 $result = db_select($query);
