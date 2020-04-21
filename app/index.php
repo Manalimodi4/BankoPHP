@@ -1,9 +1,15 @@
 <?php
+session_start();
 require_once '../connection.php';
 
 if (isset($_POST['signin'])) {
     $response = db_signin($_POST['username'], $_POST['password']);
 }
+$roomID = db_quote($_SESSION['player']['roomID']);
+$query = "SELECT * FROM `rooms` WHERE `roomID` =".$roomID;
+$result = db_select($query);
+$_SESSION['rooms'] = $result[0];
+consoleJSON($_SESSION);
 ?>
 <!doctype html>
 <html lang="en" class="h-100">
@@ -29,10 +35,10 @@ if (isset($_POST['signin'])) {
             <div class="navbar-brand ">
                 <img src="../images/Banko.svg" height="30" alt="">
             </div>
-            
+
             <div class="ok">
-            <button class="btn btn-dark" onclick="shuffle()">Shuffle</button>
-            <a class="btn px-3 btn-outline-danger" href="signout.php">Sign Out</a></div>
+                <!-- <button class="btn btn-dark" onclick="shuffle()">Shuffle</button> -->
+                <a class="btn px-3 btn-outline-danger" href="../signout.php">Sign Out</a></div>
         </nav>
     </header>
     <main class="h-100 d-flex">
@@ -44,7 +50,7 @@ if (isset($_POST['signin'])) {
                             <div class="container-fluid">
                                 <div class="row ">
                                     <div class="col-sm-12 px-4">
-                                        <div class="deck my-3 mt-4 d-flex justify-content-center" id="deck">
+                                        <div class="deck my-3 mt-4 d-flex justify-content-center" id="stage">
 
                                         </div>
                                     </div>
@@ -64,7 +70,7 @@ if (isset($_POST['signin'])) {
                                             </button>
                                         </div>
                                     </div>
-                                    <div class="col-sm-5 d-flex flex-column">
+                                    <div class="col-sm-5 d-flex flex-column mt-3 mt-md-0">
                                         <div class="text-center text-muted mb-1">
                                             POT AMOUNT
                                         </div>
@@ -75,14 +81,27 @@ if (isset($_POST['signin'])) {
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12 my-3 mt-4 d-flex justify-content-around">
-                                        <button type="button" class="btn btn-warning px-3">Pass</button>
-                                        <button type="button" class="btn btn-dark px-3">Bet</button>
-                                        <button type="button" class="btn btn-danger px-3">Banco</button>
+                                        <?php
+                                            if($_SESSION['rooms']['isPlaying']== $_SESSION['player']['username'])
+                                                echo '
+                                                    <button type="button" class="btn btn-warning px-3">Pass</button>
+                                                    <button type="button" class="btn btn-dark px-3">Bet</button>
+                                                    <button type="button" class="btn btn-danger px-3">Banco</button>
+                                                ';
+                                            else
+                                                echo '
+                                                    <div class="d-flex flex-column align-items-center">
+                                                        <div class="mb-1">
+                                                            Playing: '.$_SESSION['rooms']['isPlaying'].'
+                                                        </div>
+                                                        Time Left: 2
+                                                    </div>
+                                                ';
+                                        ?>                                      
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                     <div class="col-md-3 pt-5">
                         <div class="float-right d-md-none">
@@ -92,6 +111,7 @@ if (isset($_POST['signin'])) {
                 </div>
             </div>
         </section>
+        <div class="d-none" id="roomID"><?php echo $_SESSION['rooms']['roomID']?></div>
     </main>
      
     <!-- Optional JavaScript -->
@@ -100,8 +120,12 @@ if (isset($_POST['signin'])) {
     <!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script src="../js/main.js"></script>
+    <script>
+        pot = document.querySelector("#pot");
+        window.onload = startObservingRoom;
+    </script>
+
 </body>
 
 </html>

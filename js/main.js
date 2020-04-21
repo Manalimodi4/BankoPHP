@@ -31,7 +31,9 @@ function getJoinedPlayers(roomID) {
                 node.appendChild(node2);
                 node.appendChild(node3);
                 playerList.appendChild(node);
-                setTimeout(() => node.classList.add("animate"), 500);
+
+                var ele = document.querySelector("#currentPlayerList");
+                ele.value = JSON.stringify(data);
             }
         },
         error: function(jqXhr, textStatus, errorMessage) { // error callback 
@@ -92,7 +94,7 @@ function shuffle() {
 }
 
 function renderDeck() {
-    document.getElementById('deck').innerHTML = '';
+    document.getElementById('stage').innerHTML = '';
     for (var i = 0; i < 2; i++) {
         var card = document.createElement("div");
         var value = document.createElement("div");
@@ -105,7 +107,7 @@ function renderDeck() {
         card.appendChild(value);
         card.appendChild(suit);
 
-        document.getElementById("deck").appendChild(card);
+        document.getElementById("stage").appendChild(card);
     }
 }
 
@@ -115,7 +117,6 @@ function load() {
     renderDeck();
 }
 
-pot = document.querySelector("#pot");
 
 function addScore(el) {
     pot.innerText = parseInt(pot.innerText) + 10;
@@ -128,3 +129,34 @@ function subScore(el) {
 
 
 window.onload = load;
+
+function startObservingRoom() {
+    deck = getDeck();
+    shuffle();
+    renderDeck();
+    roomID = document.querySelector("#roomID");
+    roomID = roomID.textContent;
+    window.setInterval(function() {
+        observeRoom(roomID);
+    }, 1000);
+}
+
+function observeRoom(roomID) {
+    $.ajax('../api/observeRoom.php', {
+        data: { roomID: roomID },
+        contentType: 'application/json',
+        dataType: 'json', // type of response data
+        //timeout: 500,     // timeout milliseconds
+        success: function(data, status, xhr) { // success callback function
+            players = JSON.parse(data.players);
+            // console.log(players[0].username);
+            console.log(data.isPlaying);
+
+        },
+        error: function(textStatus, errorMessage) { // error callback 
+            // console.log(jqxhr);
+            console.log(textStatus);
+            console.log(errorMessage);
+        }
+    });
+}
