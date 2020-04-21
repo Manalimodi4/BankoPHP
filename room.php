@@ -1,14 +1,11 @@
 <?php
-
-use function PHPSTORM_META\type;
-
 session_start();
 if (!isset($_SESSION['player']['roomID']))
     header("Location: game.php");
 require_once 'components/header.php';
 require_once 'connection.php';
 
-if (isset($_POST['startGame'])) {
+if (isset($_POST['startGame'])) {        
     @$roomID = db_quote($_SESSION['player']['roomID']);
     $currentPlayerList = db_quote($_POST['currentPlayerList']);
     @$isAdmin = db_quote($_SESSION['player']['isAdmin']);
