@@ -65,63 +65,6 @@ function forceKick(username) {
     });
 }
 
-var cards = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
-var suits = ["diamonds", "hearts", "spades", "clubs"];
-var deck = new Array();
-
-function getDeck() {
-    var deck = new Array();
-
-    for (var i = 0; i < suits.length; i++) {
-        for (var x = 0; x < cards.length; x++) {
-            var card = { Value: cards[x], Suit: suits[i] };
-            deck.push(card);
-        }
-    }
-
-    return deck;
-}
-
-function shuffle() {
-    // for 1000 turns
-    // switch the values of two random cards
-    for (var i = 0; i < 1000; i++) {
-        var location1 = Math.floor((Math.random() * deck.length));
-        var location2 = Math.floor((Math.random() * deck.length));
-        var tmp = deck[location1];
-
-        deck[location1] = deck[location2];
-        deck[location2] = tmp;
-    }
-
-    renderDeck();
-}
-
-function renderDeck() {
-    document.getElementById('stage').innerHTML = '';
-    for (var i = 0; i < 2; i++) {
-        var card = document.createElement("div");
-        var value = document.createElement("div");
-        var suit = document.createElement("div");
-        card.className = "card1 shadow-lg";
-        value.className = "value";
-        suit.className = "suit " + deck[i].Suit;
-
-        value.innerHTML = deck[i].Value;
-        card.appendChild(value);
-        card.appendChild(suit);
-
-        document.getElementById("stage").appendChild(card);
-    }
-}
-
-function load() {
-    deck = getDeck();
-    shuffle();
-    renderDeck();
-}
-
-
 function addScore(el) {
     pot.innerText = parseInt(pot.innerText) + 10;
 }
@@ -132,16 +75,14 @@ function subScore(el) {
 }
 
 
-
 function startObservingRoom() {
-    deck = getDeck();
-    shuffle();
-    renderDeck();
+
     roomID = document.querySelector("#roomID");
     roomID = roomID.textContent;
     window.setInterval(function() {
-        observeRoom(roomID);
+        observeRoom(roomID)
     }, 1000);
+    renderCards(roomID);
 
     var ele = document.querySelector("#rightCard");
     var elem = document.querySelector(".value");
@@ -164,7 +105,6 @@ function observeRoom(roomID) {
         //timeout: 500,     // timeout milliseconds
         success: function(data, status, xhr) { // success callback function
             players = JSON.parse(data.players);
-            console.log(data);
 
         },
         error: function(textStatus, errorMessage) { // error callback 
@@ -189,6 +129,7 @@ function observeRoomStart(roomID, username) {
                     window.location.href = "app/";
                 }
             }
+
         },
         error: function(textStatus, errorMessage) { // error callback 
             // console.log(jqxhr);
@@ -203,4 +144,40 @@ function roomStartEventListener(roomID, username) {
     window.setInterval(function() {
         observeRoomStart(roomID, username);
     }, 1000);
+}
+
+function renderCards(roomID, username) {
+    $.ajax('../api/observeRoom.php', {
+        data: { roomID: roomID },
+        contentType: 'application/json',
+        dataType: 'json', // type of response data
+        //timeout: 500,     // timeout milliseconds
+        success: function(data, status, xhr) { // success callback function
+            myDeckJSON = JSON.parse(data.deck);
+            document.getElementById('stage').innerHTML = '';
+            for (var i = 0; i < 2; i++) {
+                var card = document.createElement("div");
+                var value = document.createElement("div");
+                var suit = document.createElement("div");
+                card.className = "card1 shadow-lg";
+                value.className = "value";
+                console.log(myDeckJSON[i]);
+
+                suit.className = "suit" + myDeckJSON[i].substr(1);
+
+                value.innerHTML = myDeckJSON[i].substr(0, 1);
+                card.appendChild(value);
+                card.appendChild(suit);
+
+                document.getElementById("stage").appendChild(card);
+
+            }
+
+        },
+        error: function(textStatus, errorMessage) { // error callback 
+            // console.log(jqxhr);
+            console.log(textStatus);
+            console.log(errorMessage);
+        }
+    });
 }

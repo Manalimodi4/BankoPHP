@@ -5,15 +5,33 @@ if (!isset($_SESSION['player']['roomID']))
 require_once 'components/header.php';
 require_once 'connection.php';
 
+
+    #generating deck
+    $cards=array("A","2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"); 
+    $suits=array("diamonds", "hearts", "spades", "clubs");
+    $i=0;
+    foreach ($cards as $key => $value) {
+        foreach ($suits as $key2 => $value2) {
+            $deck[$i]=$value." ".$value2;
+            $i=$i+1;
+        }
+    }
+    #shuffle the deck
+    shuffle($deck);
+    $deck=json_encode($deck);#encode in json
+    $deck=db_quote($deck);
+
+
 if (isset($_POST['startGame'])) {
     @$roomID = db_quote($_SESSION['player']['roomID']);
     $currentPlayerList = db_quote($_POST['currentPlayerList']);
     @$isAdmin = db_quote($_SESSION['player']['isAdmin']);
     @$isPlaying = $isAdmin;
 
+
     $query = "INSERT INTO `rooms`
-            (roomID, players, isAdmin, isPlaying) VALUES 
-            (" . $roomID . " , " . $currentPlayerList . " , " . $isAdmin . " , " . $isPlaying . " )
+            (roomID, players, isAdmin, isPlaying,deck) VALUES 
+            (" . $roomID . " , " . $currentPlayerList . " , " . $isAdmin . " , " . $isPlaying . " , " .$deck. " )
     ";
 
     $result = db_query($query);
