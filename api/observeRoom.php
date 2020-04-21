@@ -26,7 +26,7 @@ function doGet() {
         @$roomID = db_quote($_GET['roomID']);
         $query = "SELECT * FROM `rooms` WHERE `roomID` =".$roomID;
         $response = db_select($query);
-        $response = $response[0];
+        @$response = $response[0];
         if($response == array()) {
             $response = false;
         }

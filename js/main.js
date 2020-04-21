@@ -34,6 +34,10 @@ function getJoinedPlayers(roomID) {
 
                 var ele = document.querySelector("#currentPlayerList");
                 ele.value = JSON.stringify(data);
+
+
+                // var ele = document.querySelector("#leftCard");
+
             }
         },
         error: function(jqXhr, textStatus, errorMessage) { // error callback 
@@ -128,7 +132,6 @@ function subScore(el) {
 }
 
 
-window.onload = load;
 
 function startObservingRoom() {
     deck = getDeck();
@@ -139,6 +142,18 @@ function startObservingRoom() {
     window.setInterval(function() {
         observeRoom(roomID);
     }, 1000);
+
+    var ele = document.querySelector("#rightCard");
+    var elem = document.querySelector(".value");
+    var eleme = document.querySelector(".suit");
+    classes = eleme.className.slice(4);
+    ele.innerText = (elem.innerText) + (classes);
+
+    var ele = document.querySelector("#leftCard");
+    var elem = document.querySelectorAll(".value")[1];
+    var eleme = document.querySelectorAll(".suit")[1];
+    classes = eleme.className.slice(4);
+    ele.innerText = (elem.innerText) + (classes);
 }
 
 function observeRoom(roomID) {
@@ -149,8 +164,7 @@ function observeRoom(roomID) {
         //timeout: 500,     // timeout milliseconds
         success: function(data, status, xhr) { // success callback function
             players = JSON.parse(data.players);
-            // console.log(players[0].username);
-            console.log(data.isPlaying);
+            console.log(data);
 
         },
         error: function(textStatus, errorMessage) { // error callback 
@@ -159,4 +173,34 @@ function observeRoom(roomID) {
             console.log(errorMessage);
         }
     });
+}
+
+function observeRoomStart(roomID, username) {
+    $.ajax('api/observeRoom.php', {
+        data: { roomID: roomID },
+        contentType: 'application/json',
+        dataType: 'json', // type of response data
+        //timeout: 500,     // timeout milliseconds
+        success: function(data, status, xhr) { // success callback function
+            if (data) {
+                if (data.isAdmin == username) {
+                    console.log("Player is admin, shouldn't see this msf");
+                } else {
+                    window.location.href = "app/";
+                }
+            }
+        },
+        error: function(textStatus, errorMessage) { // error callback 
+            // console.log(jqxhr);
+            console.log(textStatus);
+            console.log(errorMessage);
+        }
+    });
+}
+
+
+function roomStartEventListener(roomID, username) {
+    window.setInterval(function() {
+        observeRoomStart(roomID, username);
+    }, 1000);
 }

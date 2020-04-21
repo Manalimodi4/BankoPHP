@@ -3,7 +3,7 @@ session_start();
 require_once '../connection.php';
 
 $roomID = db_quote($_SESSION['player']['roomID']);
-$query = "SELECT * FROM `rooms` WHERE `roomID` =".$roomID;
+$query = "SELECT * FROM `rooms` WHERE `roomID` =" . $roomID;
 $result = db_select($query);
 $_SESSION['rooms'] = $result[0];
 consoleJSON($_SESSION);
@@ -21,8 +21,6 @@ consoleJSON($_SESSION);
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../css/style.css">
-    <!-- Datatable CSS -->
-    <link rel="stylesheet" href="cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
     <title>Banko Game</title>
 </head>
 
@@ -42,7 +40,7 @@ consoleJSON($_SESSION);
         <section class="flex-fill align-self-center">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-6 offset-sm-3 ">
+                    <div class="col-lg-5 offset-lg-4 col-md-7 offset-md-3 col-sm-8 offset-sm-2 ">
                         <div class="card py-4 rounded-xl">
                             <div class="container-fluid">
                                 <div class="row ">
@@ -79,38 +77,40 @@ consoleJSON($_SESSION);
                                 <div class="row">
                                     <div class="col-sm-12 my-3 mt-4 d-flex justify-content-around">
                                         <?php
-                                            if($_SESSION['rooms']['isPlaying']== $_SESSION['player']['username'])
-                                                echo '
+                                        if ($_SESSION['rooms']['isPlaying'] == $_SESSION['player']['username'])
+                                            echo '
                                                     <button type="button" class="btn btn-warning px-3">Pass</button>
                                                     <button type="button" class="btn btn-dark px-3">Bet</button>
                                                     <button type="button" class="btn btn-danger px-3">Banco</button>
                                                 ';
-                                            else
-                                                echo '
+                                        else
+                                            echo '
                                                     <div class="d-flex flex-column align-items-center">
                                                         <div class="mb-1">
-                                                            Playing: '.$_SESSION['rooms']['isPlaying'].'
+                                                            Playing: ' . $_SESSION['rooms']['isPlaying'] . '
                                                         </div>
                                                         Time Left: 2
                                                     </div>
                                                 ';
-                                        ?>                                      
+                                        ?>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3 pt-5">
-                        <div class="float-right d-md-none">
-                            <button type="button" class="btn btn-dark px-3">View Board</button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>
-        <div class="d-none" id="roomID"><?php echo $_SESSION['rooms']['roomID']?></div>
+        <div class="d-none" id="roomID"><?php echo $_SESSION['rooms']['roomID'] ?></div>
+        <div class="d-none">
+            <div id="rightCard"></div>
+            <div id="currentCard"></div>
+            <div id="leftCard"></div>
+        </div>
+
     </main>
-     
+
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -121,6 +121,7 @@ consoleJSON($_SESSION);
     <script>
         pot = document.querySelector("#pot");
         window.onload = startObservingRoom;
+        // window.onload = load;
     </script>
 
 </body>
