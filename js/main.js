@@ -181,3 +181,7 @@ function renderCards(roomID, username) {
         }
     });
 }
+
+function initialisePot(el) {
+    console.log(el);
+}
