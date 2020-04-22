@@ -83,7 +83,7 @@ function startObservingRoom() {
         observeRoom(roomID)
     }, 1000);
     renderCards(roomID);
-    window.alert("hii");
+    // window.alert("hii");
 
 }
 
@@ -153,9 +153,9 @@ function renderCards(roomID, username) {
                 value.className = "value";
                 console.log(myDeckJSON[i]);
 
-                suit.className = "suit" + myDeckJSON[i].substr(1);
+                suit.className = "suit " + myDeckJSON[i].substr(2);
 
-                value.innerHTML = myDeckJSON[i].substr(0, 1);
+                value.innerHTML = myDeckJSON[i].substr(0, 2);
                 card.appendChild(value);
                 card.appendChild(suit);
 
@@ -177,7 +177,6 @@ function initialisePotEvent() {
     roomID = document.querySelector('#roomID');
     roomID = roomID.innerText;
     console.log(roomID);
-
     $.ajax('../api/initialisePot.php', {
         data: { roomID: roomID },
         contentType: 'application/json',
@@ -193,5 +192,6 @@ function initialisePotEvent() {
             console.log(textStatus);
             console.log(errorMessage);
         }
-    })
+    });
+    renderCards(roomID);
 }
