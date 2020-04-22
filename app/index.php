@@ -109,7 +109,10 @@ consoleJSON($_SESSION);
         </div>
 
     </main>
-
+    <?php 
+      consoleJSON($_SESSION['rooms']['isAdmin']);
+      consoleJSON($_SESSION['player']['username']);
+      ?>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -121,8 +124,14 @@ consoleJSON($_SESSION);
     <script>
         pot = document.querySelector("#pot");
         window.onload = startObservingRoom;
+    //  initialise pot if player is admin
+    
         // window.onload = load;
     </script>
+     <?php 
+      if($_SESSION['rooms']['isAdmin']==$_SESSION['player']['username'])
+        echo '<script>window.onload = initialisePotEvent;</script>';
+      ?>
 
 </body>
 

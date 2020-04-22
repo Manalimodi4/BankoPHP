@@ -83,6 +83,7 @@ function startObservingRoom() {
         observeRoom(roomID)
     }, 1000);
     renderCards(roomID);
+    window.alert("hii");
 
 }
 
@@ -113,7 +114,7 @@ function observeRoomStart(roomID, username) {
         success: function(data, status, xhr) { // success callback function
             if (data) {
                 if (data.isAdmin == username) {
-                    console.log("Player is admin, shouldn't see this msf");
+                    console.log("Player is admin, shouldn't see this msg");
                 } else {
                     window.location.href = "app/";
                 }
@@ -167,10 +168,30 @@ function renderCards(roomID, username) {
             // console.log(jqxhr);
             console.log(textStatus);
             console.log(errorMessage);
+            window.alert("not working");
         }
     });
 }
 
-function initialisePot(el) {
-    console.log(el);
+function initialisePotEvent() {
+    roomID = document.querySelector('#roomID');
+    roomID = roomID.innerText;
+    console.log(roomID);
+
+    $.ajax('../api/initialisePot.php', {
+        data: { roomID: roomID },
+        contentType: 'application/json',
+        dataType: 'json', // type of response data
+        //timeout: 500,     // timeout milliseconds
+        success: function(data, status, xhr) { // success callback function
+            //players = JSON.parse(data.players);
+            console.log(data);
+
+        },
+        error: function(textStatus, errorMessage) { // error callback 
+            // console.log(jqxhr);
+            console.log(textStatus);
+            console.log(errorMessage);
+        }
+    })
 }
