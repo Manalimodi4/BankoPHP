@@ -73,7 +73,7 @@ if (isset($_POST['startGame'])) {
                                         
                                         <?php
                                         if ($_SESSION['player']['isAdmin'] != "Room Owner") {
-                                            echo '<input type="button" name="startGame" value="Start Game" onclick="initialisePot(this)" class="btn btn-primary mb-2 btn-block">';
+                                            echo '<input type="submit" name="startGame" value="Start Game" onclick="initialisePot(this)" class="btn btn-primary mb-2 btn-block">';
                                         }
                                         ?>
                                     </form>

@@ -84,17 +84,6 @@ function startObservingRoom() {
     }, 1000);
     renderCards(roomID);
 
-    var ele = document.querySelector("#rightCard");
-    var elem = document.querySelector(".value");
-    var eleme = document.querySelector(".suit");
-    classes = eleme.className.slice(4);
-    ele.innerText = (elem.innerText) + (classes);
-
-    var ele = document.querySelector("#leftCard");
-    var elem = document.querySelectorAll(".value")[1];
-    var eleme = document.querySelectorAll(".suit")[1];
-    classes = eleme.className.slice(4);
-    ele.innerText = (elem.innerText) + (classes);
 }
 
 function observeRoom(roomID) {
