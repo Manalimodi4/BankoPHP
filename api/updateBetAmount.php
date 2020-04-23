@@ -24,21 +24,11 @@ switch ($request_method) {
 function doGet()
 {
     $response2 = false;
-    if (@$_GET['roomID']) {
+    if (@$_GET['roomID']&& @$_GET['betAmount']) {
 
         @$roomID = db_quote($_GET['roomID']);
-        $query = "SELECT username,amount FROM `accounts` WHERE `roomID` =" . $roomID;
-        $response = db_select($query);
-
-        for ($i = 0; $i < count($response); $i++) {
-            //print_r($response[$i]["username"]);
-            $username = db_quote($response[$i]["username"]);
-            $amount = db_quote(intval($response[$i]["amount"]) - 10);
-            $query = "UPDATE `accounts` SET `amount` = " . $amount . " WHERE `username`=" . $username;
-            $response2 = db_query($query);
-        }
-        $potBalance = count($response) * 10;
-        $query = "UPDATE `rooms` SET `potBalance`=" . $potBalance . " WHERE `roomID`=" . $roomID;
+        @$betAmount = db_quote($_GET['betAmount']);
+        $query = "UPDATE `rooms` SET `action`=" . $betAmount . " WHERE `roomID`=" . $roomID;
         $response2 = db_query($query);
     }
     return $response2;

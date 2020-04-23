@@ -56,13 +56,18 @@ consoleJSON($_SESSION);
                                             BET AMOUNT
                                         </div>
                                         <div class="d-flex flex-row justify-content-center">
-                                            <button type="button" class="btn btn-outline-primary rounded-circle" onclick="subScore(this)" id="sub">
+                                            <?php 
+                                            if ($_SESSION['rooms']['isPlaying'] == $_SESSION['player']['username'])
+                                            echo '<button type="button" class="btn btn-outline-primary rounded-circle" onclick="subScore(this)" id="sub">
                                                 <i class="fa fa-caret-down fa-lg"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-info rounded-pill px-4 py-2 mx-3" id="pot">0</button>
-                                            <button type="button" class="btn btn-outline-primary rounded-circle" onclick="addScore(this)" id="add">
+                                            </button>' ?>
+                                            <button type="button" class="btn btn-info rounded-pill px-4 py-2 mx-3" id="bet">0</button>
+                                            <?php 
+                                            if ($_SESSION['rooms']['isPlaying'] == $_SESSION['player']['username'])
+                                            echo ' <button type="button" class="btn btn-outline-primary rounded-circle" onclick="addScore(this)" id="add">
                                                 <i class="fa fa-caret-up fa-lg"></i>
-                                            </button>
+                                            </button>'
+                                            ?>
                                         </div>
                                     </div>
                                     <div class="col-sm-5 d-flex flex-column mt-3 mt-md-0">
@@ -122,7 +127,7 @@ consoleJSON($_SESSION);
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="../js/main.js"></script>
     <script>
-        pot = document.querySelector("#pot");
+        bet = document.querySelector("#bet");
         window.onload = startObservingRoom;
     //  initialise pot if player is admin
     

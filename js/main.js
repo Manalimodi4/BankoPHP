@@ -66,12 +66,40 @@ function forceKick(username) {
 }
 
 function addScore(el) {
-    pot.innerText = parseInt(pot.innerText) + 10;
+    bet.innerText = parseInt(bet.innerText) + 10;
+    updateBetAmount(bet.innerText);
 }
 
 function subScore(el) {
-    if (this.pot.innerText > 0)
-        pot.innerText = parseInt(pot.innerText) - 10;
+    if (this.bet.innerText >= 0) {
+        bet.innerText = parseInt(bet.innerText) - 10;
+        updateBetAmount(bet.innerText);
+    }
+}
+
+function updateBetAmount(betAmount) {
+
+    roomID = document.querySelector("#roomID");
+    roomID = roomID.textContent;
+    $.ajax('../api/updateBetAmount.php', {
+        data: {
+            roomID: roomID,
+            betAmount: betAmount
+        },
+        contentType: 'application/json',
+        dataType: 'json', // type of response data
+        //timeout: 500,     // timeout milliseconds
+        success: function(data, status, xhr) { // success callback function
+            console.log(data);
+
+        },
+        error: function(textStatus, errorMessage) { // error callback 
+            // console.log(jqxhr);
+            console.log(textStatus);
+            console.log(errorMessage);
+        }
+    });
+
 }
 
 
@@ -95,7 +123,13 @@ function observeRoom(roomID) {
         //timeout: 500,     // timeout milliseconds
         success: function(data, status, xhr) { // success callback function
             players = JSON.parse(data.players);
-
+            console.log(data.potBalance);
+            potBalance = document.querySelector("#pot");
+            potBalance.innerText = data.potBalance;
+            if (data.action >= 0)
+                bet.innerText = data.action;
+            else
+                bet.innerText = 0;
         },
         error: function(textStatus, errorMessage) { // error callback 
             // console.log(jqxhr);

@@ -7,7 +7,9 @@ CREATE TABLE `accounts` (
   `id` int(10) NOT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `amount` int(10) NOT NULL DEFAULT 100
+  `amount` int(10) NOT NULL DEFAULT 100,
+  
+
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 ALTER TABLE `accounts`
