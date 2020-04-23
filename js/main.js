@@ -130,6 +130,19 @@ function observeRoom(roomID) {
                 bet.innerText = data.action;
             else
                 bet.innerText = 0;
+            buttonHolder = document.querySelector("#buttonHolder");
+            buttonHolder = buttonHolder.innerHTML;
+            username2 = document.querySelector("#username");
+            username2 = username2.innerText;
+            console.log(data.isPlaying);
+            console.log(username2);
+            if (data.isPlaying != username2) {
+
+                username2.innerHTML = '<button type="button" class="btn btn-warning px-3" onclick="actionBet()">Pass</button><button type="button" class="btn btn-dark px-3">Bet</button><button type="button" class="btn btn-danger px-3">Banco</button>';
+
+            } else {
+                buttonHolder.innerHTML = ' <div class="d-flex flex-column align-items-center">' + data.isPlaying + '</div>'
+            }
         },
         error: function(textStatus, errorMessage) { // error callback 
             // console.log(jqxhr);

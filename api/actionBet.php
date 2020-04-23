@@ -72,18 +72,20 @@ function  moveToNextPlayer($roomID)
     $answer = false;
 
     for ($i = 0; $i < $count; $i++) {
-        $getName = $getNames[0]["username"];
+        $getName = $getNames[$i]["username"];
         if ($getName==$isPlaying) {
             $answer = $i;
         }
         
     }
     $nextPlayerIndex = intval($answer)+ 1;
-    if ($nextPlayerIndex > $count-1) {
+    if ($nextPlayerIndex >= $count) {
         $nextPlayerIndex=0;
     }
-    
     $nextPlayer = $getNames[$nextPlayerIndex]["username"];
+    $query = "UPDATE `rooms` SET `isPlaying` = ".db_quote($nextPlayer)." WHERE `roomID` =".$roomID;
+    $updatePlayer = db_query($query);
+
     
     return $nextPlayer;
     

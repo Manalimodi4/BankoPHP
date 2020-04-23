@@ -80,24 +80,7 @@ consoleJSON($_SESSION);
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-12 my-3 mt-4 d-flex justify-content-around">
-                                        <?php
-                                        if ($_SESSION['rooms']['isPlaying'] == $_SESSION['player']['username'])
-                                            echo '
-                                                    <button type="button" class="btn btn-warning px-3">Pass</button>
-                                                    <button type="button" class="btn btn-dark px-3">Bet</button>
-                                                    <button type="button" class="btn btn-danger px-3">Banco</button>
-                                                ';
-                                        else
-                                            echo '
-                                                    <div class="d-flex flex-column align-items-center">
-                                                        <div class="mb-1">
-                                                            Playing: ' . $_SESSION['rooms']['isPlaying'] . '
-                                                        </div>
-                                                        Time Left: 2
-                                                    </div>
-                                                ';
-                                        ?>
+                                    <div class="col-sm-12 my-3 mt-4 d-flex justify-content-around" id="buttonHolder">
                                     </div>
                                 </div>
                             </div>
@@ -107,6 +90,7 @@ consoleJSON($_SESSION);
             </div>
         </section>
         <div class="d-none" id="roomID"><?php echo $_SESSION['rooms']['roomID'] ?></div>
+        <div class="d-none" id="username"><?php echo $_SESSION['player']['username'] ?></div>
         <div class="d-none">
             <div id="rightCard"></div>
             <div id="currentCard"></div>
