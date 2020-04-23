@@ -185,7 +185,7 @@ function renderCards(roomID, username) {
                 var suit = document.createElement("div");
                 card.className = "card1 shadow-lg";
                 value.className = "value";
-                console.log(myDeckJSON[i]);
+                console.log(myDeckJSON[deckIndex + i]);
 
                 suit.className = "suit " + myDeckJSON[i].substr(2);
 
@@ -228,4 +228,29 @@ function initialisePotEvent() {
         }
     });
     renderCards(roomID);
+}
+
+function actionBet() {
+
+    roomID = document.querySelector("#roomID");
+    roomID = roomID.textContent;
+    $.ajax('../api/actionBet.php', {
+        data: {
+            roomID: roomID,
+            action: "doBet"
+        },
+        contentType: 'application/json',
+        dataType: 'json', // type of response data
+        //timeout: 500,     // timeout milliseconds
+        success: function(data, status, xhr) { // success callback function
+            console.log(data);
+
+        },
+        error: function(textStatus, errorMessage) { // error callback 
+            // console.log(jqxhr);
+            console.log(textStatus);
+            console.log(errorMessage);
+        }
+    });
+
 }
