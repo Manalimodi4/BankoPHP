@@ -7,8 +7,9 @@ function startObservingRoom() {
 
     renderCards(roomID);
 
+
     window.setInterval(function() {
-        observeRoom(roomID)
+        observeRoom(roomID);
     }, 1000);
 
 }
@@ -86,6 +87,16 @@ function observeAdmin(roomID) {
 
 
 function observeRoom(roomID) {
+    add = document.querySelector("#add");
+    sub = document.querySelector("#sub");
+    bet = document.querySelector("#bet");
+    buttonHolder = document.querySelector("#buttonHolder");
+    username2 = document.querySelector("#username");
+    username2 = username2.innerText;
+    isPlaying2 = document.querySelector("#isPlaying");
+    potBalance = document.querySelector("#pot");
+
+
     $.ajax('../api/observeRoom.php', {
         data: { roomID: roomID },
         contentType: 'application/json',
@@ -93,25 +104,33 @@ function observeRoom(roomID) {
         //timeout: 500,     // timeout milliseconds
         success: function(data, status, xhr) { // success callback function
             players = JSON.parse(data.players);
-            potBalance = document.querySelector("#pot");
             potBalance.innerText = data.potBalance;
+            if (data.isPlaying != isPlaying2.innerText)
+                renderCards(roomID);
+            isPlaying2.innerText = data.isPlaying;
             if (data.action >= 0)
                 bet.innerText = data.action;
             else
                 bet.innerText = 0;
-            buttonHolder = document.querySelector("#buttonHolder");
-            buttonHolder = buttonHolder.innerHTML;
-            buttonHolder.innerHTML = "";
-            username2 = document.querySelector("#username");
-            username2 = username2.innerText;
-            if (data.isPlaying != username2) {
-                buttonHolder.innerHTML = "";
-
+            if (data.isPlaying == username2) {
+                buttonHolder.classList.add("d-flex");
+                buttonHolder.classList.remove("d-none");
+                add.classList.add("d-block");
+                add.classList.remove("d-none");
+                sub.classList.add("d-block");
+                sub.classList.remove("d-none");
+                bet.classList.remove("w-50");
+                potBalance.classList.add("w-50");
             } else {
-                buttonHolder.innerHTML = ' <div class="d-flex flex-column align-items-center">' + data.isPlaying + '</div>'
+                buttonHolder.classList.add("d-none");
+                buttonHolder.classList.remove("d-flex");
+                add.classList.remove("d-block");
+                add.classList.add("d-none");
+                sub.classList.remove("d-block");
+                sub.classList.add("d-none");
+                bet.classList.add("w-50");
+                potBalance.classList.add("w-50");
             }
-
-
         },
         error: function(textStatus, errorMessage) { // error callback 
             // console.log(jqxhr);
@@ -146,7 +165,6 @@ function observeRoomStart(roomID, username) {
     });
 }
 
-
 function roomStartEventListener(roomID, username) {
     window.setInterval(function() {
         observeRoomStart(roomID, username);
@@ -160,7 +178,9 @@ function renderCards(roomID, username) {
         dataType: 'json', // type of response data
         //timeout: 500,     // timeout milliseconds
         success: function(data, status, xhr) { // success callback function
+            deckIndex = parseInt(data.deckIndex);
             myDeckJSON = JSON.parse(data.deck);
+            console.log(myDeckJSON);
             document.getElementById('stage').innerHTML = '';
             for (var i = 0; i < 2; i++) {
                 var card = document.createElement("div");
@@ -169,9 +189,8 @@ function renderCards(roomID, username) {
                 card.className = "card1 shadow-lg";
                 value.className = "value";
 
-                suit.className = "suit " + myDeckJSON[i].substr(2);
-
-                value.innerHTML = myDeckJSON[i].substr(0, 2);
+                suit.className = "suit " + myDeckJSON[(deckIndex + i)].substr(2);
+                value.innerHTML = myDeckJSON[(deckIndex + i)].substr(0, 2);
                 card.appendChild(value);
                 card.appendChild(suit);
 
@@ -205,7 +224,6 @@ function initialisePotEvent() {
             console.log("Pot Initialise Failed: " + errorMessage);
         }
     });
-    renderCards(roomID);
 }
 
 function actionBet() {
@@ -226,4 +244,5 @@ function actionBet() {
             console.log("Bet Action Failed: " + errorMessage);
         }
     });
+    renderCards(roomID);
 }

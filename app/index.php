@@ -54,14 +54,16 @@ $_SESSION['rooms'] = $result[0];
                                         <div class="text-center text-muted mb-1">
                                             BET AMOUNT
                                         </div>
-                                        <div class="d-flex flex-row justify-content-center">
-                                            <button type="button" class="btn btn-outline-primary rounded-circle" onclick="subScore(this)" id="sub">
-                                                <i class="fa fa-caret-down fa-lg"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-info rounded-pill px-4 py-2 mx-3" id="bet">0</button>
-                                            <button type="button" class="btn btn-outline-primary rounded-circle" onclick="addScore(this)" id="add">
-                                                <i class="fa fa-caret-up fa-lg"></i>
-                                            </button>
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <div class="d-flex flex-row justify-content-center">
+                                                <button type="button" class="btn btn-outline-primary rounded-circle" onclick="subScore(this)" id="sub">
+                                                    <i class="fa fa-caret-down fa-lg"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-info rounded-pill px-4 py-2 mx-3" id="bet">0</button>
+                                                <button type="button" class="btn btn-outline-primary rounded-circle" onclick="addScore(this)" id="add">
+                                                    <i class="fa fa-caret-up fa-lg"></i>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-5 d-flex flex-column mt-3 mt-md-0">
@@ -75,8 +77,8 @@ $_SESSION['rooms'] = $result[0];
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12 my-3 mt-4 d-flex justify-content-around" id="buttonHolder">
-                                        <button type="button" class="btn btn-warning px-3" >Pass</button>
-                                            <button type="button" class="btn btn-dark px-3" onclick="actionBet()">Bet</button>
+                                        <button type="button" class="btn btn-warning px-3">Pass</button>
+                                        <button type="button" class="btn btn-dark px-3" onclick="actionBet()">Bet</button>
                                         <button type="button" class="btn btn-danger px-3">Banco</button>
                                     </div>
                                 </div>
@@ -88,6 +90,7 @@ $_SESSION['rooms'] = $result[0];
         </section>
         <div class="d-none" id="roomID"><?php echo $_SESSION['rooms']['roomID'] ?></div>
         <div class="d-none" id="username"><?php echo $_SESSION['player']['username'] ?></div>
+        <div class="d-none" id="isPlaying"></div>
         <div class="d-none">
             <div id="rightCard"></div>
             <div id="currentCard"></div>
