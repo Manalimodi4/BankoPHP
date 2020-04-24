@@ -6,7 +6,6 @@ $roomID = db_quote($_SESSION['player']['roomID']);
 $query = "SELECT * FROM `rooms` WHERE `roomID` =" . $roomID;
 $result = db_select($query);
 $_SESSION['rooms'] = $result[0];
-consoleJSON($_SESSION);
 ?>
 <!doctype html>
 <html lang="en" class="h-100">
@@ -56,18 +55,13 @@ consoleJSON($_SESSION);
                                             BET AMOUNT
                                         </div>
                                         <div class="d-flex flex-row justify-content-center">
-                                            <?php 
-                                            if ($_SESSION['rooms']['isPlaying'] == $_SESSION['player']['username'])
-                                            echo '<button type="button" class="btn btn-outline-primary rounded-circle" onclick="subScore(this)" id="sub">
+                                            <button type="button" class="btn btn-outline-primary rounded-circle" onclick="subScore(this)" id="sub">
                                                 <i class="fa fa-caret-down fa-lg"></i>
-                                            </button>' ?>
+                                            </button>
                                             <button type="button" class="btn btn-info rounded-pill px-4 py-2 mx-3" id="bet">0</button>
-                                            <?php 
-                                            if ($_SESSION['rooms']['isPlaying'] == $_SESSION['player']['username'])
-                                            echo ' <button type="button" class="btn btn-outline-primary rounded-circle" onclick="addScore(this)" id="add">
+                                            <button type="button" class="btn btn-outline-primary rounded-circle" onclick="addScore(this)" id="add">
                                                 <i class="fa fa-caret-up fa-lg"></i>
-                                            </button>'
-                                            ?>
+                                            </button>
                                         </div>
                                     </div>
                                     <div class="col-sm-5 d-flex flex-column mt-3 mt-md-0">
@@ -81,6 +75,9 @@ consoleJSON($_SESSION);
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12 my-3 mt-4 d-flex justify-content-around" id="buttonHolder">
+                                        <button type="button" class="btn btn-warning px-3" >Pass</button>
+                                            <button type="button" class="btn btn-dark px-3" onclick="actionBet()">Bet</button>
+                                        <button type="button" class="btn btn-danger px-3">Banco</button>
                                     </div>
                                 </div>
                             </div>
@@ -98,11 +95,6 @@ consoleJSON($_SESSION);
         </div>
 
     </main>
-    <?php 
-      consoleJSON($_SESSION['rooms']['isAdmin']);
-      consoleJSON($_SESSION['player']['username']);
-      ?>
-
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -113,15 +105,11 @@ consoleJSON($_SESSION);
     <script>
         bet = document.querySelector("#bet");
         window.onload = startObservingRoom;
-    //  initialise pot if player is admin
-    
+        // window.onload = initialisePotEvent;
+        //  initialise pot if player is admin
+
         // window.onload = load;
     </script>
-     <?php 
-      if($_SESSION['rooms']['isAdmin']==$_SESSION['player']['username'])
-        echo '<script>window.onload = initialisePotEvent;</script>';
-      ?>
-
 </body>
 
 </html>
