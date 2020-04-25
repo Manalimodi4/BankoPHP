@@ -59,7 +59,7 @@ $_SESSION['rooms'] = $result[0];
                                                 <button type="button" class="btn btn-outline-primary rounded-circle" onclick="subScore(this)" id="sub">
                                                     <i class="fa fa-caret-down fa-lg"></i>
                                                 </button>
-                                                <button type="button" class="btn btn-info rounded-pill px-4 py-2 mx-3" id="bet">0</button>
+                                                <button type="button" class="btn btn-info rounded-pill px-4 py-2 mx-3" value="0" id="bet">0</button>
                                                 <button type="button" class="btn btn-outline-primary rounded-circle" onclick="addScore(this)" id="add">
                                                     <i class="fa fa-caret-up fa-lg"></i>
                                                 </button>

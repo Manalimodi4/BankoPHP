@@ -68,9 +68,9 @@ function doBanko($roomID)
 function updateDeckIndex($roomID, $updateDeckIndexBy)
 {
     $query = "SELECT `deckIndex` FROM `rooms` WHERE `roomID` = " . $roomID;
-    $deckIndex = db_select($query);
-    $deckIndex = $deckIndex[0]["deckIndex"];
-    $deckIndex = intval($deckIndex) + $updateDeckIndexBy;
+    $resultSet = db_select($query);
+    $indexFromDB = $resultSet[0]["deckIndex"];
+    $deckIndex = intval($indexFromDB) + $updateDeckIndexBy;
     if ($deckIndex > 50) {
         $deck = shuffleDeck();
         $query = "UPDATE `rooms` SET `deck`= " . $deck . " , `deckIndex` = 0 WHERE `roomID` = " . $roomID;
