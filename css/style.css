@@ -88,7 +88,8 @@ body {
     perspective: 1200px;
 } */
 
-.card1 {
+
+/* .card1 {
     -webkit-animation-name: spinner;
     -webkit-animation-timing-function: linear;
     -webkit-animation-duration: 0.75s;
@@ -99,7 +100,7 @@ body {
     -moz-transform-style: preserve-3d;
     -ms-transform-style: preserve-3d;
     transform-style: preserve-3d;
-}
+} */
 
 .card1+.card1 {
     margin-left: 10px;

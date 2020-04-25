@@ -1,4 +1,5 @@
 <?php
+echo '<script>localStorage.clear();</script>';
 session_start();
 require 'connection.php';
 $query = "UPDATE `accounts` SET `roomID` = NULL WHERE `username` =".db_quote($_SESSION['player']['username']);

@@ -60,7 +60,7 @@ function updateBetAmount(betAmount) {
 }
 
 function observeAdmin(roomID) {
-    console.log("ObserveAdmin Called");
+    // console.log("ObserveAdmin Called");
     username2 = document.querySelector("#username");
     username2 = username2.innerText;
     $.ajax('../api/observeRoom.php', {
@@ -70,16 +70,16 @@ function observeAdmin(roomID) {
         //timeout: 500,     // timeout milliseconds
         success: function(data, status, xhr) { // success callback function
             if (data.isAdmin == username2) {
-                if (localStorage.getItem('initialisePot') === false) {
-                    console.log("calling initialisePotEvent");
+                if (localStorage.getItem('initialisePot') === null) {
+                    // console.log("calling initialisePotEvent");
                     initialisePotEvent();
                     localStorage.setItem('initialisePot', true);
                 } else {
-                    console.log("user is admin but pot already initialised");
+                    // console.log("user is admin but pot already initialised");
                 }
 
             } else {
-                console.log("Yeh user admin nahi hai");
+                // console.log("Yeh user admin nahi hai");
             }
         },
         error: function(textStatus, errorMessage) { // error callback 
@@ -102,7 +102,7 @@ function observeRoom(roomID) {
     isPlaying2 = document.querySelector("#isPlaying");
     potBalance = document.querySelector("#pot");
 
-
+    renderCards(roomID);
     $.ajax('../api/observeRoom.php', {
         data: { roomID: roomID },
         contentType: 'application/json',
@@ -111,8 +111,8 @@ function observeRoom(roomID) {
         success: function(data, status, xhr) { // success callback function
             players = JSON.parse(data.players);
             potBalance.innerText = data.potBalance;
-            if (data.isPlaying != isPlaying2.innerText)
-                renderCards(roomID);
+            // if (data.isPlaying != isPlaying2.innerText)
+            //     renderCards(roomID);
             isPlaying2.innerText = data.isPlaying;
             if (data.action >= 0)
                 bet.innerText = data.action;

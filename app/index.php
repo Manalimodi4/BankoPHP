@@ -94,6 +94,7 @@ $_SESSION['rooms'] = $result[0];
         <div class="d-none" id="roomID"><?php echo $_SESSION['rooms']['roomID'] ?></div>
         <div class="d-none" id="username"><?php echo $_SESSION['player']['username'] ?></div>
         <div class="d-none" id="isPlaying"></div>
+        <div class="d-none" id="isInitialised"></div>
         <div class="d-none">
             <div id="rightCard"></div>
             <div id="currentCard"></div>

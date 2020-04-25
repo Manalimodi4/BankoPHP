@@ -6,19 +6,19 @@ require_once 'components/header.php';
 require_once 'connection.php';
 
 
-    #generating deck
-    $cards=array("A","2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"); 
-    $suits=array("diamonds", "hearts", "spades", "clubs");
-    $i=0;
-    foreach ($cards as $key => $value) {
-        foreach ($suits as $key2 => $value2) {
-            $deck[$i]=$value." ".$value2;
-            $i=$i+1;
-        }
+$cards=array("A","2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"); 
+$suits=array("diamonds", "hearts", "spades", "clubs");
+$i=0;
+foreach ($cards as $key => $value) {
+    foreach ($suits as $key2 => $value2) {
+        $deck[$i]=$value." ".$value2;
+        $i=$i+1;
     }
-    #shuffle the deck
-    shuffle($deck);
-    $deck=json_encode($deck);#encode in json
+    # code...
+}
+shuffle($deck);
+
+$deck=json_encode($deck);
     $deck=db_quote($deck);
 
 
@@ -122,6 +122,7 @@ if (isset($_POST['startGame'])) {
         }, 300000);
 
         roomStartEventListener(roomID, username);
+        localStorage.clear();
     });
 </script>
 </body>

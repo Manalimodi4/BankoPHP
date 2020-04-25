@@ -1,5 +1,5 @@
 <?php 
-    $cards=array("A","2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"); 
+    $cards=array("1","2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"); 
     $suits=array("diamonds", "hearts", "spades", "clubs");
     $i=0;
     foreach ($cards as $key => $value) {
