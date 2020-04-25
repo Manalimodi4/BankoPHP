@@ -99,6 +99,7 @@ require_once 'components/header.php';
         username = el.textContent;
         forceKick(username);
     });
+    localStorage.setItem('initialisePot', false);
 </script>
 </body>
 

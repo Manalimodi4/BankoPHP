@@ -1,12 +1,13 @@
 function startObservingRoom() {
 
+
+
     roomID = document.querySelector("#roomID");
     roomID = roomID.textContent;
 
     observeAdmin(roomID);
 
     renderCards(roomID);
-
 
     window.setInterval(function() {
         observeRoom(roomID);
@@ -69,8 +70,13 @@ function observeAdmin(roomID) {
         //timeout: 500,     // timeout milliseconds
         success: function(data, status, xhr) { // success callback function
             if (data.isAdmin == username2) {
-                initialisePotEvent();
-                console.log("Yeh user admin hai");
+                if (localStorage.getItem('initialisePot') === false) {
+                    console.log("calling initialisePotEvent");
+                    initialisePotEvent();
+                    localStorage.setItem('initialisePot', true);
+                } else {
+                    console.log("user is admin but pot already initialised");
+                }
 
             } else {
                 console.log("Yeh user admin nahi hai");
@@ -242,6 +248,48 @@ function actionBet() {
         },
         error: function(textStatus, errorMessage) { // error callback 
             console.log("Bet Action Failed: " + errorMessage);
+        }
+    });
+    renderCards(roomID);
+}
+
+function actionPass() {
+    roomID = document.querySelector("#roomID");
+    roomID = roomID.textContent;
+    $.ajax('../api/actionBet.php', {
+        data: {
+            roomID: roomID,
+            action: "doPass"
+        },
+        contentType: 'application/json',
+        dataType: 'json', // type of response data
+        //timeout: 500,     // timeout milliseconds
+        success: function(data, status, xhr) { // success callback function
+            console.log("Pass Action Completed: " + data);
+        },
+        error: function(textStatus, errorMessage) { // error callback 
+            console.log("Bet Action Failed: " + errorMessage);
+        }
+    });
+    renderCards(roomID);
+}
+
+function actionBanko() {
+    roomID = document.querySelector("#roomID");
+    roomID = roomID.textContent;
+    $.ajax('../api/actionBet.php', {
+        data: {
+            roomID: roomID,
+            action: "doBanko"
+        },
+        contentType: 'application/json',
+        dataType: 'json', // type of response data
+        //timeout: 500,     // timeout milliseconds
+        success: function(data, status, xhr) { // success callback function
+            console.log("Banko Action Completed: " + data);
+        },
+        error: function(textStatus, errorMessage) { // error callback 
+            console.log("Banko Action Failed: " + errorMessage);
         }
     });
     renderCards(roomID);

@@ -35,8 +35,8 @@ function doGet()
             case 'doBet':
                 $response2 = doBet($roomID);
                 break;
-            case 'doBanco':
-                $response2 = doBanco($roomID);
+            case 'doBanko':
+                $response2 = doBanko($roomID);
                 break;
             default:
                 $response2 = "Invalid Action";
@@ -58,8 +58,11 @@ function doBet($roomID)
     $response = updateDeckIndex($roomID, 3);
     return $response;
 }
-function doBanco($roomID)
+function doBanko($roomID)
 {
+    $response = moveToNextPlayer($roomID);
+    $response = updateDeckIndex($roomID, 51);
+    return $response;
 }
 
 function updateDeckIndex($roomID, $updateDeckIndexBy)
@@ -69,21 +72,8 @@ function updateDeckIndex($roomID, $updateDeckIndexBy)
     $deckIndex = $deckIndex[0]["deckIndex"];
     $deckIndex = intval($deckIndex) + $updateDeckIndexBy;
     if ($deckIndex > 50) {
-        #generating deck
-        $cards = array("A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K");
-        $suits = array("diamonds", "hearts", "spades", "clubs");
-        $i = 0;
-        foreach ($cards as $key => $value) {
-            foreach ($suits as $key2 => $value2) {
-                $deck[$i] = $value . " " . $value2;
-                $i = $i + 1;
-            }
-        }
-        #shuffle the deck
-        shuffle($deck);
-        $deck = json_encode($deck); #encode in json
-        $deck = db_quote($deck);
-        $query = "UPDATE `rooms` SET `deck`= ".$deck." , `deckIndex` = 0 WHERE `roomID` = ".$roomID;
+        $deck = shuffleDeck();
+        $query = "UPDATE `rooms` SET `deck`= " . $deck . " , `deckIndex` = 0 WHERE `roomID` = " . $roomID;
         $response = db_query($query);
     } else {
         $query = "UPDATE `rooms` SET `deckIndex` = " . $deckIndex . " WHERE `roomID` = " . $roomID;
@@ -91,7 +81,24 @@ function updateDeckIndex($roomID, $updateDeckIndexBy)
     }
     return $response;
 }
-
+function shuffleDeck()
+{
+    #generating deck
+    $cards = array("A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K");
+    $suits = array("diamonds", "hearts", "spades", "clubs");
+    $i = 0;
+    foreach ($cards as $key => $value) {
+        foreach ($suits as $key2 => $value2) {
+            $deck[$i] = $value . " " . $value2;
+            $i = $i + 1;
+        }
+    }
+    #shuffle the deck
+    shuffle($deck);
+    $deck = json_encode($deck); #encode in json
+    $deck = db_quote($deck);
+    return $deck;
+}
 function  moveToNextPlayer($roomID)
 {
     // $query = "SELECT `players` FROM `rooms` WHERE `roomID` =" . $roomID;

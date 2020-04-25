@@ -77,9 +77,12 @@ $_SESSION['rooms'] = $result[0];
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12 my-3 mt-4 d-flex justify-content-around" id="buttonHolder">
-                                        <button type="button" class="btn btn-warning px-3">Pass</button>
+                                        <button type="button" class="btn btn-warning px-3" onclick="actionPass()">Pass</button>
                                         <button type="button" class="btn btn-dark px-3" onclick="actionBet()">Bet</button>
-                                        <button type="button" class="btn btn-danger px-3">Banco</button>
+                                        <button type="button" class="btn btn-danger px-3" onclick="actionBanko()">Banco</button>
+                                    </div>
+                                    <div class="col-sm-12 my-3 mt-4 d-flex justify-content-around" id="playerHolder">
+
                                     </div>
                                 </div>
                             </div>
@@ -108,10 +111,6 @@ $_SESSION['rooms'] = $result[0];
     <script>
         bet = document.querySelector("#bet");
         window.onload = startObservingRoom;
-        // window.onload = initialisePotEvent;
-        //  initialise pot if player is admin
-
-        // window.onload = load;
     </script>
 </body>
 
