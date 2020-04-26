@@ -1,14 +1,15 @@
 <?php
 session_start();
 require_once '../connection.php';
-
+if (!isset($_SESSION['player']['roomID']))
+    header("Location: ../");
 $roomID = db_quote($_SESSION['player']['roomID']);
 $query = "SELECT * FROM `rooms` WHERE `roomID` =" . $roomID;
 $result = db_select($query);
 $_SESSION['rooms'] = $result[0];
 ?>
 <!doctype html>
-<html lang="en" class="h-100">
+<html lang="en">
 
 <head>
     <!-- Required meta tags -->
@@ -23,7 +24,7 @@ $_SESSION['rooms'] = $result[0];
     <title>Banko Game</title>
 </head>
 
-<body class="h-100">
+<body>
     <header role="navbar">
         <nav class="navbar bg-white fixed-top">
             <div class="navbar-brand ">
@@ -35,11 +36,11 @@ $_SESSION['rooms'] = $result[0];
                 <a class="btn px-3 btn-outline-danger" href="../signout.php">Sign Out</a></div>
         </nav>
     </header>
-    <main class="h-100 d-flex">
+    <main class="d-flex" style="padding-top: 80px;">
         <section class="flex-fill align-self-center">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-5 offset-lg-4 col-md-7 offset-md-3 col-sm-8 offset-sm-2 ">
+                    <div class="col-lg-6  col-md-7  col-sm-12 mb-3">
                         <div class="card py-4 rounded-xl">
                             <div class="container-fluid">
                                 <div class="row ">
@@ -85,6 +86,16 @@ $_SESSION['rooms'] = $result[0];
 
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-5  col-sm-12 mb-3">
+                        <div class="card rounded-xl p-4">
+                            <div class="card-header">
+                                You: <?php echo $_SESSION['player']['username'] ?>
+                            </div>
+                            <div class="card-body">
+                                Display Leaderboard Here
                             </div>
                         </div>
                     </div>

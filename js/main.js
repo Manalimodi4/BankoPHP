@@ -1,7 +1,5 @@
 function startObservingRoom() {
 
-
-
     roomID = document.querySelector("#roomID");
     roomID = roomID.textContent;
 
@@ -91,7 +89,6 @@ function observeAdmin(roomID) {
 
 }
 
-
 function observeRoom(roomID) {
     add = document.querySelector("#add");
     sub = document.querySelector("#sub");
@@ -146,7 +143,6 @@ function observeRoom(roomID) {
     });
 }
 
-
 function observeRoomStart(roomID, username) {
     $.ajax('api/observeRoom.php', {
         data: { roomID: roomID },
@@ -186,13 +182,14 @@ function renderCards(roomID, username) {
         success: function(data, status, xhr) { // success callback function
             deckIndex = parseInt(data.deckIndex);
             myDeckJSON = JSON.parse(data.deck);
-            console.log(myDeckJSON);
             document.getElementById('stage').innerHTML = '';
             for (var i = 0; i < 2; i++) {
                 var card = document.createElement("div");
                 var value = document.createElement("div");
                 var suit = document.createElement("div");
+
                 card.className = "card1 shadow-lg";
+                card.id = "card" + i;
                 value.className = "value";
 
                 suit.className = "suit " + myDeckJSON[(deckIndex + i)].substr(2);
