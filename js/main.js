@@ -99,7 +99,7 @@ function observeRoom(roomID) {
     isPlaying2 = document.querySelector("#isPlaying");
     potBalance = document.querySelector("#pot");
 
-    renderCards(roomID);
+    updateCards(roomID);
     $.ajax('../api/observeRoom.php', {
         data: { roomID: roomID },
         contentType: 'application/json',
@@ -191,8 +191,10 @@ function renderCards(roomID, username) {
                 card.className = "card1 shadow-lg";
                 card.id = "card" + i;
                 value.className = "value";
+                value.id = "value" + i;
 
                 suit.className = "suit " + myDeckJSON[(deckIndex + i)].substr(2);
+                suit.id = "suit" + i;
                 value.innerHTML = myDeckJSON[(deckIndex + i)].substr(0, 2);
                 card.appendChild(value);
                 card.appendChild(suit);
@@ -200,13 +202,41 @@ function renderCards(roomID, username) {
                 document.getElementById("stage").appendChild(card);
 
             }
-
         },
         error: function(textStatus, errorMessage) { // error callback 
             // console.log(jqxhr);
             console.log(textStatus);
             console.log(errorMessage);
             window.alert("not working");
+        }
+    });
+}
+
+function updateCards(roomID, username) {
+    $.ajax('../api/observeRoom.php', {
+        data: { roomID: roomID },
+        contentType: 'application/json',
+        dataType: 'json', // type of response data
+        //timeout: 500,     // timeout milliseconds
+        success: function(data, status, xhr) { // success callback function
+            deckIndex = parseInt(data.deckIndex);
+            myDeckJSON = JSON.parse(data.deck);
+            // document.getElementById('stage').innerHTML = '';
+            for (var i = 0; i < 2; i++) {
+                // var card = document.getElementById("card" + i);
+                var value = document.getElementById("value" + i);
+                var suit = document.getElementById("suit" + i);
+
+                suit.className = "suit " + myDeckJSON[(deckIndex + i)].substr(2);
+                value.innerHTML = myDeckJSON[(deckIndex + i)].substr(0, 2);
+
+            }
+        },
+        error: function(textStatus, errorMessage) { // error callback 
+            // console.log(jqxhr);
+            console.log(textStatus);
+            console.log(errorMessage);
+            window.alert("Update card not working");
         }
     });
 }
@@ -227,6 +257,32 @@ function initialisePotEvent() {
             console.log("Pot Initialise Failed: " + errorMessage);
         }
     });
+}
+
+function revealCard() {
+    var test = true;
+    if (test) {
+        var htmlString = '<div id="revealed">Hi I am the revealed Div</div>',
+
+            // here we create a <div> element:
+            revealCard = document.createElement('div'),
+
+            // we retrieve the element after which the new
+            // element should be inserted:
+            card1 = document.querySelector('.card1');
+
+        // assign the supplied HTML string to the innerHTML of the
+        // created element:
+        revealCard.innerHTML = htmlString;
+
+        // and use parentNode.insertBefore to insert the desired element
+        // (the first argument) before the element identified in the
+        // second argument, which is the nextSibling of the found
+        // 'div1' element:
+        card1.parentNode.insertBefore(revealCard.firstChild, card1.nextSibling);
+
+    }
+    test = !test;
 }
 
 function actionBet() {

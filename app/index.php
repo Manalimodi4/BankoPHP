@@ -81,6 +81,7 @@ $_SESSION['rooms'] = $result[0];
                                         <button type="button" class="btn btn-warning px-3" onclick="actionPass()">Pass</button>
                                         <button type="button" class="btn btn-dark px-3" onclick="actionBet()">Bet</button>
                                         <button type="button" class="btn btn-danger px-3" onclick="actionBanko()">Banco</button>
+                                        <button class="btn btn-secondary" onclick="revealCard()">Test</button>
                                     </div>
                                     <div class="col-sm-12 my-3 mt-4 d-flex justify-content-around" id="playerHolder">
 
