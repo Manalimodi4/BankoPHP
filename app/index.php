@@ -94,9 +94,31 @@ $_SESSION['rooms'] = $result[0];
                         <div class="card rounded-xl p-4">
                             <div class="card-header">
                                 You: <?php echo $_SESSION['player']['username'] ?>
+                               <?php $query1 ="SELECT username,amount FROM `accounts` WHERE `roomID`=".db_quote($_SESSION['player']['roomID']);  
+                                $tableResult = db_query($query1);  ?> 
                             </div>
                             <div class="card-body">
-                                Display Leaderboard Here
+                            <div class="table-responsive">  
+                     <table id="players_data" class="table table-striped table-bordered">  
+                          <thead>  
+                               <tr>  
+                                    <td>username</td>  
+                                    <td>amount</td>  
+                               </tr>  
+                          </thead>  
+                          <?php  
+                          while($row = mysqli_fetch_array($tableResult))  
+                          {  
+                               echo '  
+                               <tr>  
+                                    <td>'.$row["username"].'</td>  
+                                    <td>'.$row["amount"].'</td>  
+                               </tr>  
+                               ';  
+                          }  
+                          ?>  
+                     </table>  
+                </div> 
                             </div>
                         </div>
                     </div>
@@ -125,6 +147,11 @@ $_SESSION['rooms'] = $result[0];
         bet = document.querySelector("#bet");
         window.onload = startObservingRoom;
     </script>
+     <script>  
+    // $(document).ready(function(){  
+    //   $('#players_data').DataTable();  
+    //  });  
+ </script> 
 </body>
 
 </html>

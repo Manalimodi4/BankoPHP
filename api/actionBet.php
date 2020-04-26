@@ -133,3 +133,7 @@ function response($x)
     header('Content-Type: application/json');
     echo json_encode($x);
 }
+function compareCards($roomID){
+    $query = "SELECT isPlaying, deck, deckIndex FROM `rooms` WHERE `roomID` = " .db_quote($roomID);
+    
+}
