@@ -38,6 +38,9 @@ function doGet()
             case 'doBanko':
                 $response2 = doBanko($roomID);
                 break;
+            case 'compareCards':
+                $response2 = compareCards($roomID);
+                break;
             default:
                 $response2 = "Invalid Action";
                 break;
@@ -54,9 +57,22 @@ function doPass($roomID)
 }
 function doBet($roomID)
 {
-    $response = moveToNextPlayer($roomID);
-    $response = updateDeckIndex($roomID, 3);
-    return $response;
+    // find result of bet
+    $betResult = compareCards($roomID);
+    if($betResult) {
+        // amount deduct from pot & add to Player amount
+        $isTransferred = transferAmount($roomID, "POT_TO_PLAYER");
+    } 
+    else {
+        // amount deduct from player & add to pot
+        $isTransferred = transferAmount($roomID, "PLAYER_TO_POT");
+    }
+    // move to next player
+    $movedToNextPlayer = moveToNextPlayer($roomID);
+
+    // update deck index
+    $deckIndexUpdated = updateDeckIndex($roomID, 3);
+    return compact("betResult" , "isTransferred" , "movedToNextPlayer", "deckIndexUpdated");
 }
 function doBanko($roomID)
 {
@@ -83,19 +99,19 @@ function updateDeckIndex($roomID, $updateDeckIndexBy)
 }
 function shuffleDeck()
 {
-    $cards=array("A","2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"); 
-    $suits=array("diamonds", "hearts", "spades", "clubs");
-    $i=0;
+    $cards = array("A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K");
+    $suits = array("diamonds", "hearts", "spades", "clubs");
+    $i = 0;
     foreach ($cards as $key => $value) {
         foreach ($suits as $key2 => $value2) {
-            $deck[$i]=$value." ".$value2;
-            $i=$i+1;
+            $deck[$i] = $value . " " . $value2;
+            $i = $i + 1;
         }
         # code...
     }
     shuffle($deck);
-    
-    $deck=json_encode($deck); #encode in json
+
+    $deck = json_encode($deck); #encode in json
     $deck = db_quote($deck);
     return $deck;
 }
@@ -133,7 +149,115 @@ function response($x)
     header('Content-Type: application/json');
     echo json_encode($x);
 }
-function compareCards($roomID){
-    $query = "SELECT isPlaying, deck, deckIndex FROM `rooms` WHERE `roomID` = " .db_quote($roomID);
-    
+function compareCards($roomID)
+{
+    $query = "SELECT  deck, deckIndex FROM `rooms` WHERE `roomID` = " . $roomID;
+    $resultSet = db_select($query);
+    $compareCardDeck = $resultSet[0]["deck"];
+    $compareCardDeck = json_decode($compareCardDeck);
+    $compareCardDeckIndex = $resultSet[0]["deckIndex"];
+    $firstCard = getFaceValue(substr($compareCardDeck[$compareCardDeckIndex], 0, 2));
+    $secondCard = getFaceValue(substr($compareCardDeck[$compareCardDeckIndex + 1], 0, 2));
+    $betCard = getFaceValue(substr($compareCardDeck[$compareCardDeckIndex + 2], 0, 2));
+
+    if ($firstCard < $secondCard) {
+        //bet Won
+        if (($betCard > $firstCard) && ($betCard < $secondCard)) {
+            $betCompareResult = true;
+        }
+        // bet Lost
+        else {
+            $betCompareResult = false;
+        }
+    }
+
+    if ($firstCard > $secondCard) {
+        //bet Won
+        if (($betCard < $firstCard) && ($betCard > $secondCard)) {
+            $betCompareResult = true;
+        }
+        // bet Lost
+        else {
+            $betCompareResult = false;
+        }
+    }
+    //bet Lost
+    if($firstCard == $secondCard) {
+        $betCompareResult = false;
+    }
+    return $betCompareResult;
+}
+
+function getFaceValue($cardName)
+{
+    if ($cardName == "A ")
+        return 1;
+    if ($cardName == "2 ")
+        return 2;
+    if ($cardName == "3 ")
+        return 3;
+    if ($cardName == "4 ")
+        return 4;
+    if ($cardName == "5 ")
+        return 5;
+    if ($cardName == "6 ")
+        return 6;
+    if ($cardName == "7 ")
+        return 7;
+    if ($cardName == "8 ")
+        return 8;
+    if ($cardName == "9 ")
+        return 9;
+    if ($cardName == "10")
+        return 10;
+    if ($cardName == "J ")
+        return 11;
+    if ($cardName == "Q ")
+        return 12;
+    if ($cardName == "K ")
+        return 13;
+    else
+        return $cardName;
+}
+function transferAmount($roomID, $mode) {
+    if($mode == "POT_TO_PLAYER") {
+        // Deduct from Pot
+        $query = "SELECT isPlaying, action , potBalance FROM `rooms` WHERE `roomID` = ".$roomID;
+        $resultSett = db_select($query);
+        $betAmount = $resultSett[0]["action"];
+        $potBalance = $resultSett[0]["potBalance"];
+        $player =  $resultSett[0]["isPlaying"];
+        $potBalance = $potBalance - $betAmount;
+        $query = "UPDATE `rooms` SET `action`= 0, `potBalance` = ".db_quote($potBalance)." WHERE `roomID` = ".$roomID;
+        $deductFromPot = db_query($query);
+        // add to player 
+        $query = "SELECT amount FROM `accounts` WHERE `username` = ".db_quote($player);
+        $resulttt = db_select($query);
+        $playerBalance = $resulttt[0]["amount"];
+        $playerBalance = $playerBalance + $betAmount;
+        $query = "UPDATE `accounts` SET `amount` = ".db_quote($playerBalance)." WHERE `username` = ".db_quote($player);
+        $addToPlayer = db_query($query);
+
+        return compact("deductFromPot","addToPlayer");
+    }
+    if($mode == "PLAYER_TO_POT") {
+        // add to Pot
+        $query = "SELECT isPlaying, action , potBalance FROM `rooms` WHERE `roomID` = ".$roomID;
+        $resultSett = db_select($query);
+        $betAmount = $resultSett[0]["action"];
+        $potBalance = $resultSett[0]["potBalance"];
+        $player =  $resultSett[0]["isPlaying"];
+        $potBalance = $potBalance + $betAmount;
+        $query = "UPDATE `rooms` SET `action`= 0, `potBalance` = ".db_quote($potBalance)." WHERE `roomID` = ".$roomID;
+        $addToPot = db_query($query);
+        // deduct from player 
+        $query = "SELECT amount FROM `accounts` WHERE `username` = ".db_quote($player);
+        $resulttt = db_select($query);
+        $playerBalance = $resulttt[0]["amount"];
+        $playerBalance = $playerBalance - $betAmount;
+        $query = "UPDATE `accounts` SET `amount` = ".db_quote($playerBalance)." WHERE `username` = ".db_quote($player);
+        $deductFromPlayer = db_query($query);
+
+        return compact("addToPot","deductFromPlayer");
+    }
 }
