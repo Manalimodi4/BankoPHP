@@ -166,6 +166,9 @@ function compareCards($roomID)
     $compareCardDeck = $resultSet[0]["deck"];
     $compareCardDeck = json_decode($compareCardDeck);
     $compareCardDeckIndex = $resultSet[0]["deckIndex"];
+    $firstCardName= $compareCardDeck[$compareCardDeckIndex];
+    $secondCardName= $compareCardDeck[$compareCardDeckIndex + 1];
+    $betCardName= $compareCardDeck[$compareCardDeckIndex + 2];
     $firstCard = getFaceValue(substr($compareCardDeck[$compareCardDeckIndex], 0, 2));
     $secondCard = getFaceValue(substr($compareCardDeck[$compareCardDeckIndex + 1], 0, 2));
     $betCard = getFaceValue(substr($compareCardDeck[$compareCardDeckIndex + 2], 0, 2));
@@ -195,7 +198,7 @@ function compareCards($roomID)
     if($firstCard == $secondCard) {
         $betCompareResult = false;
     }
-    return $betCompareResult;
+    return compact("betCompareResult","firstCardName", "secondCardName", "betCardName");
 }
 
 function getFaceValue($cardName)

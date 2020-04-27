@@ -44,7 +44,24 @@ $_SESSION['rooms'] = $result[0];
                         <div class="card py-4 rounded-xl">
                             <div class="container-fluid">
                                 <div class="row ">
+                                    <div class="cardRevealOverlay">
+                                        <div class="card1 shadow-lg" id="firstCard">
+                                            <div class="value" id="firstCardValue">X</div>
+                                            <div class="suit " id="firstCardSuit"></div>
+                                        </div>
+
+                                            <div class="card1 shadow-lg" id="revealedCard" style="position: absolute; transform: scale(0.85)">
+                                                <div class="value" id="betCardValue">Y</div>
+                                                <div class="suit " id="betCardSuit"></div>
+                                            </div>
+                                        
+                                        <div class="card1 shadow-lg" id="secondCard">
+                                            <div class="value" id="secondCardValue">Z</div>
+                                            <div class="suit " id="secondCardSuit"></div>
+                                        </div>
+                                    </div>
                                     <div class="col-sm-12 px-4">
+
                                         <div class="deck my-3 mt-4 d-flex justify-content-center" id="stage">
 
                                         </div>
@@ -83,7 +100,13 @@ $_SESSION['rooms'] = $result[0];
                                         <button type="button" class="btn btn-danger px-3" onclick="actionBanko()">Banco</button>
                                     </div>
                                     <div class="col-sm-12 my-3 mt-4 d-flex justify-content-around" id="playerHolder">
-
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                Playing: <span id="isPlaying">isPlaying</span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

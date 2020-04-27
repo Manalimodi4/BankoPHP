@@ -22,7 +22,11 @@ function addScore(el) {
     }
     bet.innerText = pott + 10;
     updateBetAmount(bet.innerText);
+    el.disabled = true;
+    setTimeout(function() { el.disabled = false; }, 500);
+    counterAnimation('bet');
 }
+var clicked = 1;
 
 function subScore(el) {
     var pott = parseInt(bet.innerText);
@@ -33,6 +37,11 @@ function subScore(el) {
         bet.innerText = parseInt(pott) - 10;
         updateBetAmount(pott);
     }
+    if (clicked == 1) {
+        el.click();
+    }
+    el.disabled = true;
+    setTimeout(function() { el.disabled = false; }, 500);
 }
 
 function updateBetAmount(betAmount) {
@@ -267,29 +276,9 @@ function initialisePotEvent() {
 }
 
 function revealCard() {
-    var test = true;
-    if (test) {
-        var htmlString = '<div id="revealed">Hi I am the revealed Div</div>',
-
-            // here we create a <div> element:
-            revealCard = document.createElement('div'),
-
-            // we retrieve the element after which the new
-            // element should be inserted:
-            card1 = document.querySelector('.card1');
-
-        // assign the supplied HTML string to the innerHTML of the
-        // created element:
-        revealCard.innerHTML = htmlString;
-
-        // and use parentNode.insertBefore to insert the desired element
-        // (the first argument) before the element identified in the
-        // second argument, which is the nextSibling of the found
-        // 'div1' element:
-        card1.parentNode.insertBefore(revealCard.firstChild, card1.nextSibling);
-
-    }
-    test = !test;
+    cardRevealOverlay = document.querySelector(".cardRevealOverlay");
+    cardRevealOverlay.style.display = "flex";
+    setTimeout(function() { cardRevealOverlay.style.display = "none"; }, 5000);
 }
 
 function actionBet() {
@@ -305,8 +294,20 @@ function actionBet() {
         dataType: 'json', // type of response data
         //timeout: 500,     // timeout milliseconds
         success: function(data, status, xhr) { // success callback function
-            console.log("Bet Action Completed:");
-            console.log(data);
+            // console.log("Bet Action Completed:");
+            // console.log(data.betResult);
+            betCard = data.betResult.betCardName;
+            firstCard = data.betResult.firstCardName;
+            secondCard = data.betResult.secondCardName;
+
+            document.getElementById("firstCardValue").innerText = firstCard.substr(0, 2);
+            document.getElementById("secondCardValue").innerText = secondCard.substr(0, 2);
+            document.getElementById("betCardValue").innerText = betCard.substr(0, 2);
+
+            document.getElementById("firstCardSuit").classList.add(firstCard.substr(2).split(" ").join(""));
+            document.getElementById("secondCardSuit").classList.add(secondCard.substr(2).split(" ").join(""));
+            document.getElementById("betCardSuit").classList.add(betCard.substr(2).split(" ").join(""));
+
         },
         error: function(textStatus, errorMessage) { // error callback 
             console.log("Bet Action Failed: " + errorMessage);
@@ -314,6 +315,8 @@ function actionBet() {
     });
     renderCards(roomID);
     updateLeaderBoard(roomID);
+    counterAnimation('bet');
+    counterAnimation('pot');
 }
 
 function actionPass() {
@@ -328,8 +331,7 @@ function actionPass() {
         dataType: 'json', // type of response data
         //timeout: 500,     // timeout milliseconds
         success: function(data, status, xhr) { // success callback function
-            console.log("Pass Action Completed: ");
-            console.log(data);
+            // console.log("Pass Action Completed: " + data);
         },
         error: function(textStatus, errorMessage) { // error callback 
             console.log("Bet Action Failed: " + errorMessage);
@@ -340,7 +342,6 @@ function actionPass() {
 }
 
 function actionBanko() {
-    revealCard();
     roomID = document.querySelector("#roomID");
     roomID = roomID.textContent;
     $.ajax('../api/actionBet.php', {
@@ -352,8 +353,7 @@ function actionBanko() {
         dataType: 'json', // type of response data
         //timeout: 500,     // timeout milliseconds
         success: function(data, status, xhr) { // success callback function
-            console.log("Banko Action Completed: ");
-            console.log(data);
+            // console.log("Banko Action Completed: "+ data);
         },
         error: function(textStatus, errorMessage) { // error callback 
             console.log("Banko Action Failed: " + errorMessage);
@@ -373,8 +373,7 @@ function updateLeaderBoard(roomID) {
         dataType: 'json', // type of response data
         //timeout: 500,     // timeout milliseconds
         success: function(data, status, xhr) { // success callback function
-            console.log("Fetched Leaderboard: ");
-            console.log(data);
+            // console.log("Fetched Leaderboard.");
             insertedData = ' ';
             data.forEach(player => {
                 insertedData += '<tr><td>' + player.username + '</td><td>' + player.amount + '</td ></tr>';
@@ -386,4 +385,18 @@ function updateLeaderBoard(roomID) {
         }
     });
 
+}
+
+function counterAnimation(animate) {
+    $('#' + animate).each(function() {
+        $(this).prop('Counter', 0).animate({
+            Counter: $(this).text()
+        }, {
+            duration: 500,
+            easing: 'swing',
+            step: function(now) {
+                $(this).text(Math.ceil(now));
+            }
+        });
+    });
 }
