@@ -352,7 +352,8 @@ function actionBanko() {
         dataType: 'json', // type of response data
         //timeout: 500,     // timeout milliseconds
         success: function(data, status, xhr) { // success callback function
-            console.log("Banko Action Completed: " + data);
+            console.log("Banko Action Completed: ");
+            console.log(data);
         },
         error: function(textStatus, errorMessage) { // error callback 
             console.log("Banko Action Failed: " + errorMessage);

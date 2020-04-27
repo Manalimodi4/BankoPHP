@@ -76,9 +76,19 @@ function doBet($roomID)
 }
 function doBanko($roomID)
 {
-    $response = moveToNextPlayer($roomID);
-    $response = updateDeckIndex($roomID, 51);
-    return $response;
+    $betResult =compareCards($roomID);
+    if($betResult) {
+        // amount deduct from pot & add to Player amount
+        $isTransferred = transferAmount($roomID, "FLUSH_PLAYER");
+    } 
+    else {
+        // amount deduct from player & add to pot
+        $isTransferred = transferAmount($roomID,"FLUSH_POT");
+    }
+
+    $movedToNextPlayer = moveToNextPlayer($roomID);
+    $deckIndexUpdated = updateDeckIndex($roomID, 51);
+    return compact("betResult" , "isTransferred" , "movedToNextPlayer", "deckIndexUpdated");
 }
 
 function updateDeckIndex($roomID, $updateDeckIndexBy)
@@ -259,5 +269,48 @@ function transferAmount($roomID, $mode) {
         $deductFromPlayer = db_query($query);
 
         return compact("addToPot","deductFromPlayer");
+    }
+    if($mode=="FLUSH_PLAYER")
+    {
+        //If player wins Banko
+        $query2 ="SELECT potBalance,isPlaying FROM `rooms` WHERE `roomID` = ".$roomID;
+        $resultSet = db_select($query2);
+        $potBalance = $resultSet[0]["potBalance"];
+        $player =  $resultSet[0]["isPlaying"];
+        //select amount
+        $query = "SELECT amount FROM `accounts` WHERE `username` = ".db_quote($player);
+        $resulttt = db_select($query);
+        $playerBalance = $resulttt[0]["amount"];
+        //add potbalance to playerbalance
+        $playerBalance = $playerBalance + $potBalance;
+        $query = "UPDATE `accounts` SET `amount` = ".db_quote($playerBalance)." WHERE `username` = ".db_quote($player);
+        $flushPlayer = db_query($query);
+        //set potbalance zero
+        $clearPotQuery = "UPDATE `rooms` SET `potBalance` = 0 WHERE `roomID`= ".$roomID;
+        $clearPot = db_query($clearPotQuery);
+
+        return compact("clearPot","flushPlayer");
+    }
+    if($mode=="FLUSH_POT")
+    {
+        //If player loses Banko
+        $query2 ="SELECT potBalance,isPlaying FROM `rooms` WHERE `roomID` = ".$roomID;
+        $resultSet = db_select($query2);
+        $potBalance = $resultSet[0]["potBalance"];
+        $player = $resultSet[0]["isPlaying"];
+        //select player's amount
+        $query = "SELECT amount FROM `accounts` WHERE `username` = ".db_quote($player);
+        $resulttt = db_select($query);
+        $playerBalance = $resulttt[0]["amount"];
+        //deduct player's balance
+        $playerBalance = $playerBalance - $potBalance;
+        $potBalance = $potBalance * 2;
+        $query = "UPDATE `accounts` SET `amount` = ".db_quote($playerBalance)." WHERE `username` = ".db_quote($player);
+        $deductFromPlayer = db_query($query);
+        //update  pot
+        $flushPotQuery= "UPDATE `rooms` SET `potBalance` =". db_quote($potBalance)." WHERE `roomID`= ".$roomID;
+        $flushPot = db_query($flushPotQuery);
+
+        return compact("flushPot","deductFromPlayer");
     }
 }
