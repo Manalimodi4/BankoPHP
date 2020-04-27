@@ -51,7 +51,7 @@ $_SESSION['rooms'] = $result[0];
                                     </div>
                                 </div>
                                 <div class="row my-2">
-                                    <div class="col-sm-7 d-flex flex-column justify-content-center">
+                                    <div class="col-sm-6 d-flex flex-column justify-content-center">
                                         <div class="text-center text-muted mb-1">
                                             BET AMOUNT
                                         </div>
@@ -67,7 +67,7 @@ $_SESSION['rooms'] = $result[0];
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-5 d-flex flex-column mt-3 mt-md-0">
+                                    <div class="col-sm-6 d-flex flex-column mt-3 mt-md-0">
                                         <div class="text-center text-muted mb-1">
                                             POT AMOUNT
                                         </div>
@@ -81,7 +81,6 @@ $_SESSION['rooms'] = $result[0];
                                         <button type="button" class="btn btn-warning px-3" onclick="actionPass()">Pass</button>
                                         <button type="button" class="btn btn-dark px-3" onclick="actionBet()">Bet</button>
                                         <button type="button" class="btn btn-danger px-3" onclick="actionBanko()">Banco</button>
-                                        <button class="btn btn-secondary" onclick="revealCard()">Test</button>
                                     </div>
                                     <div class="col-sm-12 my-3 mt-4 d-flex justify-content-around" id="playerHolder">
 
@@ -91,34 +90,48 @@ $_SESSION['rooms'] = $result[0];
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-5  col-sm-12 mb-3">
-                        <div class="card rounded-xl p-4">
+                        <div class="card rounded-xl p-1 bg-dark text-white">
                             <div class="card-header">
                                 You: <?php echo $_SESSION['player']['username'] ?>
-                               <?php $query1 ="SELECT username,amount FROM `accounts` WHERE `roomID`=".db_quote($_SESSION['player']['roomID']);  
-                                $tableResult = db_query($query1);  ?> 
+                                <?php $query1 = "SELECT username,amount FROM `accounts` WHERE `roomID`=" . db_quote($_SESSION['player']['roomID']);
+                                $tableResult = db_query($query1);  ?>
                             </div>
-                            <div class="card-body">
-                            <div class="table-responsive">  
-                     <table id="players_data" class="table table-striped table-bordered">  
-                          <thead>  
+                            <!-- <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="players_data" class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <td>username</td>
+                                                <td>amount</td>
+                                            </tr>
+                                        </thead>
+                                        <?php
+                                        while ($row = mysqli_fetch_array($tableResult)) {
+                                            echo '  
                                <tr>  
-                                    <td>username</td>  
-                                    <td>amount</td>  
+                                    <td>' . $row["username"] . '</td>  
+                                    <td>' . $row["amount"] . '</td>  
                                </tr>  
-                          </thead>  
-                          <?php  
-                          while($row = mysqli_fetch_array($tableResult))  
-                          {  
-                               echo '  
-                               <tr>  
-                                    <td>'.$row["username"].'</td>  
-                                    <td>'.$row["amount"].'</td>  
-                               </tr>  
-                               ';  
-                          }  
-                          ?>  
-                     </table>  
-                </div> 
+                               ';
+                                        }
+                                        ?>
+                                    </table>
+                                </div>
+                            </div> -->
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table id="players_data" class="table table-hover table-dark">
+                                        <thead>
+                                            <tr>
+                                                <td>Player</td>
+                                                <td>Amount</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="leaderboard">
+
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -147,11 +160,11 @@ $_SESSION['rooms'] = $result[0];
         bet = document.querySelector("#bet");
         window.onload = startObservingRoom;
     </script>
-     <script>  
-    // $(document).ready(function(){  
-    //   $('#players_data').DataTable();  
-    //  });  
- </script> 
+    <script>
+        // $(document).ready(function(){  
+        //   $('#players_data').DataTable();  
+        //  });  
+    </script>
 </body>
 
 </html>

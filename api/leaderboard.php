@@ -6,16 +6,6 @@ switch ($request_method) {
     case 'GET':
         response(doGet());
         break;
-    case 'POST':
-        doPost();
-        break;
-    case 'DELETE':
-        doDelete();
-        break;
-    case 'PUT':
-        doPut();
-        break;
-
     default:
         # code...
         break;
@@ -26,7 +16,7 @@ function doGet() {
     if(@$_GET['roomID']) {
         @$roomID = db_quote($_GET['roomID']);
         $query = "SELECT username, amount FROM `accounts` WHERE `roomID` =".$roomID;
-        $response = db_query($query);
+        $response = db_select($query);
     }
     return $response;
 }

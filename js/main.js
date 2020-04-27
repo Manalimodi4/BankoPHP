@@ -7,6 +7,8 @@ function startObservingRoom() {
 
     renderCards(roomID);
 
+    updateLeaderBoard(roomID);
+
     window.setInterval(function() {
         observeRoom(roomID);
     }, 1000);
@@ -108,9 +110,14 @@ function observeRoom(roomID) {
         success: function(data, status, xhr) { // success callback function
             players = JSON.parse(data.players);
             potBalance.innerText = data.potBalance;
+            previousPlayer = localStorage.getItem('previousPlayer');
+            if (previousPlayer != data.isPlaying) {
+                updateLeaderBoard(roomID);
+            }
             // if (data.isPlaying != isPlaying2.innerText)
             //     renderCards(roomID);
             isPlaying2.innerText = data.isPlaying;
+            localStorage.setItem('previousPlayer', data.isPlaying);
             if (data.action >= 0)
                 bet.innerText = data.action;
             else
@@ -286,6 +293,7 @@ function revealCard() {
 }
 
 function actionBet() {
+    revealCard();
     roomID = document.querySelector("#roomID");
     roomID = roomID.textContent;
     $.ajax('../api/actionBet.php', {
@@ -297,13 +305,15 @@ function actionBet() {
         dataType: 'json', // type of response data
         //timeout: 500,     // timeout milliseconds
         success: function(data, status, xhr) { // success callback function
-            console.log("Bet Action Completed: " + data);
+            console.log("Bet Action Completed:");
+            console.log(data);
         },
         error: function(textStatus, errorMessage) { // error callback 
             console.log("Bet Action Failed: " + errorMessage);
         }
     });
     renderCards(roomID);
+    updateLeaderBoard(roomID);
 }
 
 function actionPass() {
@@ -318,16 +328,19 @@ function actionPass() {
         dataType: 'json', // type of response data
         //timeout: 500,     // timeout milliseconds
         success: function(data, status, xhr) { // success callback function
-            console.log("Pass Action Completed: " + data);
+            console.log("Pass Action Completed: ");
+            console.log(data);
         },
         error: function(textStatus, errorMessage) { // error callback 
             console.log("Bet Action Failed: " + errorMessage);
         }
     });
     renderCards(roomID);
+    updateLeaderBoard(roomID);
 }
 
 function actionBanko() {
+    revealCard();
     roomID = document.querySelector("#roomID");
     roomID = roomID.textContent;
     $.ajax('../api/actionBet.php', {
@@ -346,4 +359,30 @@ function actionBanko() {
         }
     });
     renderCards(roomID);
+    updateLeaderBoard(roomID);
+}
+
+function updateLeaderBoard(roomID) {
+    leaderboard = document.getElementById("leaderboard");
+    $.ajax('../api/leaderboard.php', {
+        data: {
+            roomID: roomID
+        },
+        contentType: 'application/json',
+        dataType: 'json', // type of response data
+        //timeout: 500,     // timeout milliseconds
+        success: function(data, status, xhr) { // success callback function
+            console.log("Fetched Leaderboard: ");
+            console.log(data);
+            insertedData = ' ';
+            data.forEach(player => {
+                insertedData += '<tr><td>' + player.username + '</td><td>' + player.amount + '</td ></tr>';
+            });
+            leaderboard.innerHTML = insertedData;
+        },
+        error: function(textStatus, errorMessage) { // error callback 
+            console.log("Banko Action Failed: " + errorMessage);
+        }
+    });
+
 }
