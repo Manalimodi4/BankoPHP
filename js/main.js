@@ -298,7 +298,7 @@ function actionBet() {
             isPlaying22 = document.querySelector("#isPlaying22");
             isPlaying22.innerText = data.isTransferred.player;
             betResults = document.querySelector("#betResult");
-            if (data.betResult) {
+            if (data.betCompareResult) {
                 betResults.innerText = " won ";
             } else {
                 betResults.innerText = " lost ";
@@ -391,12 +391,13 @@ function actionBanko() {
             firstCardSuit.classList.add('suit', firstCard.substr(2).split(" ").join(""));
             secondCardSuit.classList.add('suit', secondCard.substr(2).split(" ").join(""));
             betCardSuit.classList.add('suit', betCard.substr(2).split(" ").join(""));
-            revealCard();
+
         },
         error: function(textStatus, errorMessage) { // error callback 
             console.log("Banko Action Failed: " + errorMessage);
         }
     });
+    revealCard();
     renderCards(roomID);
     updateLeaderBoard(roomID);
 }

@@ -75,8 +75,8 @@ function doBet($roomID)
 }
 function doBanko($roomID)
 {
-    $betResult = compareCards($roomID);
-    if ($betResult) {
+    $betCompareResult = compareCards($roomID);
+    if ($betCompareResult) {
         // amount deduct from pot & add to Player amount
         $isTransferred = transferAmount($roomID, "FLUSH_PLAYER");
     } else {
