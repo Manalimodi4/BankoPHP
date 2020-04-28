@@ -278,7 +278,7 @@ function initialisePotEvent() {
 function revealCard() {
     cardRevealOverlay = document.querySelector(".cardRevealOverlay");
     cardRevealOverlay.style.display = "flex";
-    setTimeout(function() { cardRevealOverlay.style.display = "none"; }, 1000 * 4);
+    setTimeout(function() { cardRevealOverlay.style.display = "none"; }, 1000 * 6);
 }
 
 function actionBet() {
@@ -295,10 +295,11 @@ function actionBet() {
         //timeout: 500,     // timeout milliseconds
         success: function(data, status, xhr) { // success callback function
             // console.log("Bet Action Completed:");
+            console.log(data);
             isPlaying22 = document.querySelector("#isPlaying22");
             isPlaying22.innerText = data.isTransferred.player;
             betResults = document.querySelector("#betResult");
-            if (data.betCompareResult) {
+            if (data.betResult.betCompareResult) {
                 betResults.innerText = " won ";
             } else {
                 betResults.innerText = " lost ";

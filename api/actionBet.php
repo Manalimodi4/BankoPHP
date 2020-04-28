@@ -59,7 +59,7 @@ function doBet($roomID)
 {
     // find result of bet
     $betResult = compareCards($roomID);
-    if ($betResult) {
+    if ($betResult["betCompareResult"]) {
         // amount deduct from pot & add to Player amount
         $isTransferred = transferAmount($roomID, "POT_TO_PLAYER");
     } else {
@@ -75,8 +75,8 @@ function doBet($roomID)
 }
 function doBanko($roomID)
 {
-    $betCompareResult = compareCards($roomID);
-    if ($betCompareResult) {
+    $betResult = compareCards($roomID);
+    if ($betResult["betCompareResult"]) {
         // amount deduct from pot & add to Player amount
         $isTransferred = transferAmount($roomID, "FLUSH_PLAYER");
     } else {
@@ -164,13 +164,13 @@ function compareCards($roomID)
     $compareCardDeck = $resultSet[0]["deck"];
     $compareCardDeck = json_decode($compareCardDeck);
     $compareCardDeckIndex = $resultSet[0]["deckIndex"];
-    if($compareCardDeckIndex < 49) {
-    shuffleDeck();
-    $query = "SELECT  deck, deckIndex FROM `rooms` WHERE `roomID` = " . $roomID;
-    $resultSet = db_select($query);
-    $compareCardDeck = $resultSet[0]["deck"];
-    $compareCardDeck = json_decode($compareCardDeck);
-    $compareCardDeckIndex = $resultSet[0]["deckIndex"];
+    if ($compareCardDeckIndex > 49) {
+        shuffleDeck();
+        $query = "SELECT  deck, deckIndex FROM `rooms` WHERE `roomID` = " . $roomID;
+        $resultSet = db_select($query);
+        $compareCardDeck = $resultSet[0]["deck"];
+        $compareCardDeck = json_decode($compareCardDeck);
+        $compareCardDeckIndex = $resultSet[0]["deckIndex"];
     }
     $firstCardName = $compareCardDeck[$compareCardDeckIndex];
     $secondCardName = $compareCardDeck[$compareCardDeckIndex + 1];
@@ -262,7 +262,7 @@ function transferAmount($roomID, $mode)
         $query = "UPDATE `accounts` SET `amount` = " . db_quote($playerBalance) . " WHERE `username` = " . db_quote($player);
         $addedToPlayer = db_query($query);
 
-        return compact("deductedFromPot", "addedToPlayer", "betAmount", "playerBalance", "player");
+        return compact("deductedFromPot", "addedToPlayer", "betAmount", "playerBalance", "potBalance", "player");
     }
     if ($mode == "PLAYER_TO_POT") {
         // add to Pot
@@ -282,7 +282,7 @@ function transferAmount($roomID, $mode)
         $query = "UPDATE `accounts` SET `amount` = " . db_quote($playerBalance) . " WHERE `username` = " . db_quote($player);
         $deductedFromPlayer = db_query($query);
 
-        return compact("addedToPot", "deductedFromPlayer", "betAmount", "playerBalance", "player");
+        return compact("addedToPot", "deductedFromPlayer", "betAmount", "playerBalance", "potBalance", "player");
     }
     if ($mode == "FLUSH_PLAYER") {
         //If player wins Banko
@@ -302,7 +302,7 @@ function transferAmount($roomID, $mode)
         $clearPotQuery = "UPDATE `rooms` SET `potBalance` = 0 WHERE `roomID`= " . $roomID;
         $clearPot = db_query($clearPotQuery);
 
-        return compact("clearPot", "flushPlayer");
+        return compact("clearPot", "flushPlayer", "playerBalance", "potBalance", "player");
     }
     if ($mode == "FLUSH_POT") {
         //If player loses Banko
@@ -323,6 +323,6 @@ function transferAmount($roomID, $mode)
         $flushPotQuery = "UPDATE `rooms` SET `potBalance` =" . db_quote($potBalance) . " WHERE `roomID`= " . $roomID;
         $flushPot = db_query($flushPotQuery);
 
-        return compact("flushPot", "deductFromPlayer");
+        return compact("flushPot", "deductFromPlayer",  "playerBalance", "potBalance", "player");
     }
 }
