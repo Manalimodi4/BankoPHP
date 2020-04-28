@@ -44,21 +44,27 @@ $_SESSION['rooms'] = $result[0];
                         <div class="card py-4 rounded-xl">
                             <div class="container-fluid">
                                 <div class="row ">
-                                    <div class="cardRevealOverlay">
-                                        <div class="card2 shadow-lg" id="firstCard">
-                                            <div class="value" id="firstCardValue"></div>
-                                            <div class="" id="firstCardSuit"></div>
+                                    <div class="cardRevealOverlay flex-column">
+                                        <div class="d-flex my-2">
+                                            <span id="isPlaying22"></span>&nbsp;<span id="betResult"></span>&nbsp;<span id="amountr"></span>
                                         </div>
+                                        <div class="d-flex flex-row">
+                                            <div class="card2 shadow-lg" id="firstCard">
+                                                <div class="value" id="firstCardValue"></div>
+                                                <div class="" id="firstCardSuit"></div>
+                                            </div>
 
                                             <div class="card2 shadow-lg" id="revealedCard" style="">
                                                 <div class="value" id="betCardValue"></div>
                                                 <div class="" id="betCardSuit"></div>
                                             </div>
-                                        
-                                        <div class="card2 shadow-lg" id="secondCard">
-                                            <div class="value" id="secondCardValue"></div>
-                                            <div class="" id="secondCardSuit"></div>
+
+                                            <div class="card2 shadow-lg" id="secondCard">
+                                                <div class="value" id="secondCardValue"></div>
+                                                <div class="" id="secondCardSuit"></div>
+                                            </div>
                                         </div>
+
                                     </div>
                                     <div class="col-sm-12 px-4">
 
@@ -103,7 +109,7 @@ $_SESSION['rooms'] = $result[0];
                                         <div class="container-fluid">
                                             <div class="row">
                                                 <div class="col-sm-12">
-                                                Playing: <span id="isPlaying">isPlaying</span>
+                                                    Playing: <span id="isPlaying">isPlaying</span>
                                                 </div>
                                             </div>
                                         </div>

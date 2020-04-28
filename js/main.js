@@ -278,11 +278,11 @@ function initialisePotEvent() {
 function revealCard() {
     cardRevealOverlay = document.querySelector(".cardRevealOverlay");
     cardRevealOverlay.style.display = "flex";
-    setTimeout(function() { cardRevealOverlay.style.display = "none"; }, 5000000);
+    setTimeout(function() { cardRevealOverlay.style.display = "none"; }, 1000 * 4);
 }
 
 function actionBet() {
-    revealCard();
+
     roomID = document.querySelector("#roomID");
     roomID = roomID.textContent;
     $.ajax('../api/actionBet.php', {
@@ -295,7 +295,17 @@ function actionBet() {
         //timeout: 500,     // timeout milliseconds
         success: function(data, status, xhr) { // success callback function
             // console.log("Bet Action Completed:");
-            // console.log(data.betResult);
+            isPlaying22 = document.querySelector("#isPlaying22");
+            isPlaying22.innerText = data.isTransferred.player;
+            betResults = document.querySelector("#betResult");
+            if (data.betResult) {
+                betResults.innerText = " won ";
+            } else {
+                betResults.innerText = " lost ";
+            }
+            amountr = document.querySelector("#amountr");
+            amountr.innerText = data.isTransferred.betAmount + "!";
+
             betCard = data.betResult.betCardName;
             firstCard = data.betResult.firstCardName;
             secondCard = data.betResult.secondCardName;
@@ -314,6 +324,8 @@ function actionBet() {
             firstCardSuit.classList.add('suit', firstCard.substr(2).split(" ").join(""));
             secondCardSuit.classList.add('suit', secondCard.substr(2).split(" ").join(""));
             betCardSuit.classList.add('suit', betCard.substr(2).split(" ").join(""));
+
+            revealCard();
 
         },
         error: function(textStatus, errorMessage) { // error callback 
@@ -361,6 +373,25 @@ function actionBanko() {
         //timeout: 500,     // timeout milliseconds
         success: function(data, status, xhr) { // success callback function
             // console.log("Banko Action Completed: "+ data);
+            betCard = data.betResult.betCardName;
+            firstCard = data.betResult.firstCardName;
+            secondCard = data.betResult.secondCardName;
+
+            document.getElementById("firstCardValue").innerText = firstCard.substr(0, 2);
+            document.getElementById("secondCardValue").innerText = secondCard.substr(0, 2);
+            document.getElementById("betCardValue").innerText = betCard.substr(0, 2);
+
+            firstCardSuit = document.getElementById("firstCardSuit");
+            firstCardSuit.className = "";
+            secondCardSuit = document.getElementById("secondCardSuit");
+            secondCardSuit.className = "";
+            betCardSuit = document.getElementById("betCardSuit");
+            betCardSuit.className = "";
+
+            firstCardSuit.classList.add('suit', firstCard.substr(2).split(" ").join(""));
+            secondCardSuit.classList.add('suit', secondCard.substr(2).split(" ").join(""));
+            betCardSuit.classList.add('suit', betCard.substr(2).split(" ").join(""));
+            revealCard();
         },
         error: function(textStatus, errorMessage) { // error callback 
             console.log("Banko Action Failed: " + errorMessage);
