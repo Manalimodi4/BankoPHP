@@ -45,19 +45,19 @@ $_SESSION['rooms'] = $result[0];
                             <div class="container-fluid">
                                 <div class="row ">
                                     <div class="cardRevealOverlay">
-                                        <div class="card1 shadow-lg" id="firstCard">
-                                            <div class="value" id="firstCardValue">X</div>
-                                            <div class="suit " id="firstCardSuit"></div>
+                                        <div class="card2 shadow-lg" id="firstCard">
+                                            <div class="value" id="firstCardValue"></div>
+                                            <div class="" id="firstCardSuit"></div>
                                         </div>
 
-                                            <div class="card1 shadow-lg" id="revealedCard" style="position: absolute; transform: scale(0.85)">
-                                                <div class="value" id="betCardValue">Y</div>
-                                                <div class="suit " id="betCardSuit"></div>
+                                            <div class="card2 shadow-lg" id="revealedCard" style="">
+                                                <div class="value" id="betCardValue"></div>
+                                                <div class="" id="betCardSuit"></div>
                                             </div>
                                         
-                                        <div class="card1 shadow-lg" id="secondCard">
-                                            <div class="value" id="secondCardValue">Z</div>
-                                            <div class="suit " id="secondCardSuit"></div>
+                                        <div class="card2 shadow-lg" id="secondCard">
+                                            <div class="value" id="secondCardValue"></div>
+                                            <div class="" id="secondCardSuit"></div>
                                         </div>
                                     </div>
                                     <div class="col-sm-12 px-4">

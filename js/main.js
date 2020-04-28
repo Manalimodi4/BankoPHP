@@ -278,7 +278,7 @@ function initialisePotEvent() {
 function revealCard() {
     cardRevealOverlay = document.querySelector(".cardRevealOverlay");
     cardRevealOverlay.style.display = "flex";
-    setTimeout(function() { cardRevealOverlay.style.display = "none"; }, 5000);
+    setTimeout(function() { cardRevealOverlay.style.display = "none"; }, 5000000);
 }
 
 function actionBet() {
@@ -304,9 +304,16 @@ function actionBet() {
             document.getElementById("secondCardValue").innerText = secondCard.substr(0, 2);
             document.getElementById("betCardValue").innerText = betCard.substr(0, 2);
 
-            document.getElementById("firstCardSuit").classList.add(firstCard.substr(2).split(" ").join(""));
-            document.getElementById("secondCardSuit").classList.add(secondCard.substr(2).split(" ").join(""));
-            document.getElementById("betCardSuit").classList.add(betCard.substr(2).split(" ").join(""));
+            firstCardSuit = document.getElementById("firstCardSuit");
+            firstCardSuit.className = "";
+            secondCardSuit = document.getElementById("secondCardSuit");
+            secondCardSuit.className = "";
+            betCardSuit = document.getElementById("betCardSuit");
+            betCardSuit.className = "";
+
+            firstCardSuit.classList.add('suit', firstCard.substr(2).split(" ").join(""));
+            secondCardSuit.classList.add('suit', secondCard.substr(2).split(" ").join(""));
+            betCardSuit.classList.add('suit', betCard.substr(2).split(" ").join(""));
 
         },
         error: function(textStatus, errorMessage) { // error callback 

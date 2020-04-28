@@ -152,4 +152,190 @@ body {
     z-index: 1;
     justify-content: center;
     align-items: center;
+    transition: ease 1s;
+}
+
+.card2 {
+    padding: 10px;
+    border: solid 1px #808080;
+    background-color: white;
+    display: inline-block;
+    border-radius: 10px;
+    font-size: 14pt;
+    text-align: center;
+    color: black;
+    margin: 3px;
+    margin-right: 10px;
+}
+
+.card2 .value {
+    font-size: 15pt;
+    font-family: sans-serif;
+}
+
+.card2 .suit {
+    background-image: url("../images/card.png");
+    height: 50px;
+    width: 45px;
+}
+
+.card2 .diamonds {
+    background-position-y: 50px;
+}
+
+.card2 .hearts {
+    background-position-x: 45px;
+}
+
+.card2 .clubs {
+    background-position-x: 45px;
+    background-position-y: 50px;
+}
+
+
+/* // Medium devices (tablets, 768px and up) */
+
+@media (min-width: 768px) {
+    .card2 {
+        padding: 10px;
+        border: solid 1px #808080;
+        background-color: white;
+        display: inline-block;
+        border-radius: 10px;
+        font-size: 14pt;
+        text-align: center;
+        color: black;
+        margin: 3px;
+        margin-right: 10px;
+    }
+    .card2 .value {
+        font-size: 15pt;
+        font-family: sans-serif;
+    }
+    .card2 .suit {
+        background-image: url("https://raw.githubusercontent.com/Manalimodi4/BancoGame/master/src/main/resources/static/card.png");
+        height: 100px;
+        width: 90px;
+    }
+    .card2 .diamonds {
+        background-position-y: 100px;
+    }
+    .card2 .hearts {
+        background-position-x: 90px;
+    }
+    .card2 .clubs {
+        background-position-x: 90px;
+        background-position-y: 100px;
+    }
+}
+
+
+/* // Large devices (desktops, 992px and up) */
+
+@media (min-width: 992px) {
+    .card2 {
+        padding: 10px;
+        border: solid 1px #808080;
+        background-color: white;
+        display: inline-block;
+        border-radius: 10px;
+        font-size: 14pt;
+        text-align: center;
+        color: black;
+        margin: 3px;
+        margin-right: 10px;
+    }
+    .card2 .value {
+        font-size: 15pt;
+        font-family: sans-serif;
+    }
+    .card2 .suit {
+        background-image: url("https://raw.githubusercontent.com/Manalimodi4/BancoGame/master/src/main/resources/static/card.png");
+        height: 100px;
+        width: 90px;
+    }
+    .card2 .diamonds {
+        background-position-y: 100px;
+    }
+    .card2 .hearts {
+        background-position-x: 90px;
+    }
+    .card2 .clubs {
+        background-position-x: 90px;
+        background-position-y: 100px;
+    }
+}
+
+
+/* // Extra large devices (large desktops, 1200px and up) */
+
+@media (min-width: 1200px) {
+    .card2 {
+        padding: 10px;
+        border: solid 1px #808080;
+        background-color: white;
+        display: inline-block;
+        border-radius: 10px;
+        font-size: 14pt;
+        text-align: center;
+        color: black;
+        margin: 3px;
+        margin-right: 10px;
+    }
+    .card2 .value {
+        font-size: 15pt;
+        font-family: sans-serif;
+    }
+    .card2 .suit {
+        background-image: url("https://raw.githubusercontent.com/Manalimodi4/BancoGame/master/src/main/resources/static/card.png");
+        height: 100px;
+        width: 90px;
+    }
+    .card2 .diamonds {
+        background-position-y: 100px;
+    }
+    .card2 .hearts {
+        background-position-x: 90px;
+    }
+    .card2 .clubs {
+        background-position-x: 90px;
+        background-position-y: 100px;
+    }
+}
+
+
+/* // Small devices (landscape phones, 576px and up) */
+
+@media (min-width: 576px) {
+    .card2 {
+        padding: 10px;
+        border: solid 1px #808080;
+        background-color: white;
+        display: inline-block;
+        border-radius: 10px;
+        font-size: 14pt;
+        text-align: center;
+        color: black;
+        margin: 3px;
+        margin-right: 10px;
+    }
+    .card2 .value {
+        font-size: 15pt;
+        font-family: sans-serif;
+    }
+    .card2 .suit {
+        background-image: url("https://raw.githubusercontent.com/Manalimodi4/BancoGame/master/src/main/resources/static/card.png");
+        height: 100px;
+        width: 90px;
+    }
+    .card2 .diamonds {
+        background-position-y: 100px;
+    }
+    .card2 .hearts {
+        background-position-x: 90px;
+    }
+    .card2 .clubs {
+        background-position-x: 90px;
+        background-position-y: 100px;
+    }
 }
