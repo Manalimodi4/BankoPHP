@@ -101,9 +101,9 @@ $_SESSION['rooms'] = $result[0];
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12 my-3 mt-4 d-flex justify-content-around" id="buttonHolder">
-                                        <button type="button" class="btn btn-warning px-3" onclick="actionPass()">Pass</button>
-                                        <button type="button" class="btn btn-dark px-3" onclick="actionBet()">Bet</button>
-                                        <button type="button" class="btn btn-danger px-3" onclick="actionBanko()">Banco</button>
+                                        <button type="button" class="btn btn-warning px-3" onclick="actionPass()" id="passBtn">Pass</button>
+                                        <button type="button" class="btn btn-dark px-3" onclick="actionBet()" id="betBtn">Bet</button>
+                                        <button type="button" class="btn btn-danger px-3" onclick="actionBanko()" id="bancoBtn">Banco</button>
                                     </div>
                                     <div class="col-sm-12 my-3 mt-4 d-flex justify-content-around" id="playerHolder">
                                         <div class="container-fluid">

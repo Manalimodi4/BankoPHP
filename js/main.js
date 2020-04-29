@@ -11,7 +11,6 @@ function startObservingRoom() {
 
     window.setInterval(function() {
         observeRoom(roomID);
-        addScore(document.querySelector("#add"));
     }, 1000);
 
 }
@@ -130,7 +129,12 @@ function observeRoom(roomID) {
             previousPlayer = localStorage.getItem('previousPlayer');
             if (previousPlayer != data.isPlaying) {
                 updateLeaderBoard(roomID);
-
+            }
+            betBtn = document.querySelector("#betBtn");
+            if (data.action <= 0) {
+                betBtn.disabled = true;
+            } else {
+                betBtn.disabled = false;
             }
 
             localBetResult = localStorage.getItem('betResult');
@@ -326,7 +330,7 @@ function revealCard(data) {
     betCardSuit.classList.add('suit', betCard.substr(2).split(" ").join(""));
     cardRevealOverlay = document.querySelector(".cardRevealOverlay");
     cardRevealOverlay.style.display = "flex";
-    setTimeout(function() { cardRevealOverlay.style.display = "none"; }, 1000 * 6);
+    setTimeout(function() { cardRevealOverlay.style.display = "none"; }, 1000 * 4.5);
 }
 
 function actionBet() {
@@ -445,8 +449,9 @@ function actionBanko() {
 
             betResult = JSON.parse(betResult);
             revealCard(betResult);
-            console.log(betResult);
 
+            if (data.betResult.betCompareResult == true)
+                handleGameRestart(roomID);
         },
         error: function(textStatus, errorMessage) { // error callback 
             console.log("Banko Action Failed: " + errorMessage);
@@ -493,4 +498,9 @@ function counterAnimation(animate) {
             }
         });
     });
+}
+
+function handleGameRestart(roomID) {
+    console.log("Handing game restart for room: " + roomID);
+    localStorage.getItem('initialisePot') == null;
 }
