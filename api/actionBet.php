@@ -54,10 +54,12 @@ function doPass($roomID)
     $response = moveToNextPlayer($roomID);
     $response = updateDeckIndex($roomID, 2);
     return $response;
+
 }
 function doBet($roomID)
 {
     // find result of bet
+  
     $betResult = compareCards($roomID);
     if ($betResult["betCompareResult"]) {
         // amount deduct from pot & add to Player amount
@@ -75,6 +77,7 @@ function doBet($roomID)
 }
 function doBanko($roomID)
 {
+ 
     $betResult = compareCards($roomID);
     if ($betResult["betCompareResult"]) {
         // amount deduct from pot & add to Player amount
@@ -97,12 +100,25 @@ function updateDeckIndex($roomID, $updateDeckIndexBy)
     $deckIndex = intval($indexFromDB) + $updateDeckIndexBy;
     if ($deckIndex > 50) {
         $deck = shuffleDeck();
-        $query = "UPDATE `rooms` SET `deck`= " . $deck . " , `deckIndex` = 0 WHERE `roomID` = " . $roomID;
+        if($updateDeckIndexBy==2)
+        {
+        $query = "UPDATE `rooms` SET `deck`= " . $deck . " , `deckIndex` = 0 ,`action` = 0 WHERE `roomID` = " . $roomID;
+        }
+        else{
+            $query = "UPDATE `rooms` SET `deck`= " . $deck . " , `deckIndex` = 0 WHERE `roomID` = " . $roomID;
+        }
         $response = db_query($query);
+        
     } else {
+        if($updateDeckIndexBy==2){
+        $query = "UPDATE `rooms` SET `deckIndex` = " . $deckIndex . ",`action`= 0 WHERE `roomID` = " . $roomID;
+        } 
+        else{
         $query = "UPDATE `rooms` SET `deckIndex` = " . $deckIndex . " WHERE `roomID` = " . $roomID;
+        }
         $response = db_query($query);
     }
+
     return $response;
 }
 function shuffleDeck()
@@ -145,7 +161,7 @@ function  moveToNextPlayer($roomID)
         $nextPlayerIndex = 0;
     }
     $nextPlayer = $getNames[$nextPlayerIndex]["username"];
-    $query = "UPDATE `rooms` SET `isPlaying` = " . db_quote($nextPlayer) . ", `action` = 0 WHERE `roomID` =" . $roomID;
+    $query = "UPDATE `rooms` SET `isPlaying` = " . db_quote($nextPlayer) . ", `action` =0 WHERE `roomID` =" . $roomID;
     $updatePlayer = db_query($query);
     return $nextPlayer;
 }
