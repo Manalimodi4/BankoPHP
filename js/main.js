@@ -149,7 +149,10 @@ function observeRoom(roomID) {
                 sub.classList.add("d-none");
                 bet.classList.add("w-50");
                 potBalance.classList.add("w-50");
+                betResult = JSON.parse(data.betResult);
+                revealCard(betResult);
             }
+
         },
         error: function(textStatus, errorMessage) { // error callback 
             // console.log(jqxhr);
@@ -275,7 +278,37 @@ function initialisePotEvent() {
     });
 }
 
-function revealCard() {
+function revealCard(data) {
+    console.log(data);
+    isPlaying22 = document.querySelector("#isPlaying22");
+    isPlaying22.innerText = data.isTransferred.player;
+    betResults = document.querySelector("#betResult");
+    if (data.betResult.betCompareResult) {
+        betResults.innerText = " won ";
+    } else {
+        betResults.innerText = " lost ";
+    }
+    amountr = document.querySelector("#amountr");
+    amountr.innerText = data.isTransferred.betAmount + "!";
+
+    betCard = data.betResult.betCardName;
+    firstCard = data.betResult.firstCardName;
+    secondCard = data.betResult.secondCardName;
+
+    document.getElementById("firstCardValue").innerText = firstCard.substr(0, 2);
+    document.getElementById("secondCardValue").innerText = secondCard.substr(0, 2);
+    document.getElementById("betCardValue").innerText = betCard.substr(0, 2);
+
+    firstCardSuit = document.getElementById("firstCardSuit");
+    firstCardSuit.className = "";
+    secondCardSuit = document.getElementById("secondCardSuit");
+    secondCardSuit.className = "";
+    betCardSuit = document.getElementById("betCardSuit");
+    betCardSuit.className = "";
+
+    firstCardSuit.classList.add('suit', firstCard.substr(2).split(" ").join(""));
+    secondCardSuit.classList.add('suit', secondCard.substr(2).split(" ").join(""));
+    betCardSuit.classList.add('suit', betCard.substr(2).split(" ").join(""));
     cardRevealOverlay = document.querySelector(".cardRevealOverlay");
     cardRevealOverlay.style.display = "flex";
     setTimeout(function() { cardRevealOverlay.style.display = "none"; }, 1000 * 6);
@@ -295,39 +328,23 @@ function actionBet() {
         //timeout: 500,     // timeout milliseconds
         success: function(data, status, xhr) { // success callback function
             // console.log("Bet Action Completed:");
-            console.log(data);
-            isPlaying22 = document.querySelector("#isPlaying22");
-            isPlaying22.innerText = data.isTransferred.player;
-            betResults = document.querySelector("#betResult");
-            if (data.betResult.betCompareResult) {
-                betResults.innerText = " won ";
-            } else {
-                betResults.innerText = " lost ";
-            }
-            amountr = document.querySelector("#amountr");
-            amountr.innerText = data.isTransferred.betAmount + "!";
-
-            betCard = data.betResult.betCardName;
-            firstCard = data.betResult.firstCardName;
-            secondCard = data.betResult.secondCardName;
-
-            document.getElementById("firstCardValue").innerText = firstCard.substr(0, 2);
-            document.getElementById("secondCardValue").innerText = secondCard.substr(0, 2);
-            document.getElementById("betCardValue").innerText = betCard.substr(0, 2);
-
-            firstCardSuit = document.getElementById("firstCardSuit");
-            firstCardSuit.className = "";
-            secondCardSuit = document.getElementById("secondCardSuit");
-            secondCardSuit.className = "";
-            betCardSuit = document.getElementById("betCardSuit");
-            betCardSuit.className = "";
-
-            firstCardSuit.classList.add('suit', firstCard.substr(2).split(" ").join(""));
-            secondCardSuit.classList.add('suit', secondCard.substr(2).split(" ").join(""));
-            betCardSuit.classList.add('suit', betCard.substr(2).split(" ").join(""));
-
-            revealCard();
-
+            betResult = JSON.stringify(data);
+            $.ajax('../api/betResult.php', {
+                data: {
+                    roomID: roomID,
+                    betResult: betResult
+                },
+                contentType: 'application/json',
+                dataType: 'json', // type of response data
+                success: function(data, status, xhr) { // success callback function
+                    console.log("Bet Results added to db" + data);
+                },
+                error: function(textStatus, errorMessage) { // error callback 
+                    console.log("Bet Action Failed: " + errorMessage);
+                }
+            });
+            betResult = JSON.parse(data.betResult);
+            revealCard(betResult);
         },
         error: function(textStatus, errorMessage) { // error callback 
             console.log("Bet Action Failed: " + errorMessage);

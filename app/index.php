@@ -54,7 +54,7 @@ $_SESSION['rooms'] = $result[0];
                                                 <div class="" id="firstCardSuit"></div>
                                             </div>
 
-                                            <div class="card2 shadow-lg" id="revealedCard" style="">
+                                            <div class="card2 shadow-lg" id="revealedCard">
                                                 <div class="value" id="betCardValue"></div>
                                                 <div class="" id="betCardSuit"></div>
                                             </div>
