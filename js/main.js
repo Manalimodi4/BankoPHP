@@ -11,20 +11,28 @@ function startObservingRoom() {
 
     window.setInterval(function() {
         observeRoom(roomID);
+        addScore(document.querySelector("#add"));
     }, 1000);
 
 }
 
 function addScore(el) {
     var pott = parseInt(bet.innerText);
+    var potAmt = document.querySelector("#pot");
+    potAmt = parseInt(potAmt.innerText);
     if (isNaN(pott)) {
         pott = 0;
     }
-    bet.innerText = pott + 10;
-    updateBetAmount(bet.innerText);
-    el.disabled = true;
-    setTimeout(function() { el.disabled = false; }, 500);
-    counterAnimation('bet');
+    if (pott < potAmt) {
+        bet.innerText = pott + 10;
+
+        updateBetAmount(bet.innerText);
+        el.disabled = true;
+        setTimeout(function() { el.disabled = false; }, 500);
+        counterAnimation('bet');
+    } else {
+        el.disabled = true;
+    }
 }
 var clicked = 1;
 
@@ -419,6 +427,25 @@ function actionBanko() {
             firstCardSuit.classList.add('suit', firstCard.substr(2).split(" ").join(""));
             secondCardSuit.classList.add('suit', secondCard.substr(2).split(" ").join(""));
             betCardSuit.classList.add('suit', betCard.substr(2).split(" ").join(""));
+            betResult = JSON.stringify(data);
+            $.ajax('../api/betResult.php', {
+                data: {
+                    roomID: roomID,
+                    betResult: betResult
+                },
+                contentType: 'application/json',
+                dataType: 'json', // type of response data
+                success: function(data, status, xhr) { // success callback function
+                    console.log("Banko Results added to db:" + data);
+                },
+                error: function(textStatus, errorMessage) { // error callback 
+                    console.log("Banko Action Failed: " + errorMessage);
+                }
+            });
+
+            betResult = JSON.parse(betResult);
+            revealCard(betResult);
+            console.log(betResult);
 
         },
         error: function(textStatus, errorMessage) { // error callback 

@@ -305,6 +305,7 @@ function transferAmount($roomID, $mode)
         $query2 = "SELECT potBalance,isPlaying FROM `rooms` WHERE `roomID` = " . $roomID;
         $resultSet = db_select($query2);
         $potBalance = $resultSet[0]["potBalance"];
+        $betAmount = $potBalance;
         $player =  $resultSet[0]["isPlaying"];
         //select amount
         $query = "SELECT amount FROM `accounts` WHERE `username` = " . db_quote($player);
@@ -318,13 +319,14 @@ function transferAmount($roomID, $mode)
         $clearPotQuery = "UPDATE `rooms` SET `potBalance` = 0 WHERE `roomID`= " . $roomID;
         $clearPot = db_query($clearPotQuery);
 
-        return compact("clearPot", "flushPlayer", "playerBalance", "potBalance", "player");
+        return compact("clearPot", "flushPlayer", "playerBalance", "potBalance", "player","betAmount");
     }
     if ($mode == "FLUSH_POT") {
         //If player loses Banko
         $query2 = "SELECT potBalance,isPlaying FROM `rooms` WHERE `roomID` = " . $roomID;
         $resultSet = db_select($query2);
         $potBalance = $resultSet[0]["potBalance"];
+        $betAmount = $potBalance;
         $player = $resultSet[0]["isPlaying"];
         //select player's amount
         $query = "SELECT amount FROM `accounts` WHERE `username` = " . db_quote($player);
@@ -339,6 +341,6 @@ function transferAmount($roomID, $mode)
         $flushPotQuery = "UPDATE `rooms` SET `potBalance` =" . db_quote($potBalance) . " WHERE `roomID`= " . $roomID;
         $flushPot = db_query($flushPotQuery);
 
-        return compact("flushPot", "deductFromPlayer",  "playerBalance", "potBalance", "player");
+        return compact("flushPot", "deductFromPlayer", "betAmount", "playerBalance", "potBalance", "player");
     }
 }
