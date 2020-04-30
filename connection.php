@@ -61,7 +61,7 @@ function db_signin($username, $password)
     if ($result == array()) {
         // hash password
         $password = db_quote(password_hash($password, PASSWORD_DEFAULT));
-        $query =  $query = "INSERT INTO `accounts` (`username`,`password`) VALUES (" . $username . "," . $password . ")";
+        $query =  $query = "INSERT INTO `accounts` (`username`,`password`,`amount`) VALUES (" . $username . "," . $password . ",100)";
         $result = db_query($query);
         $query = "SELECT * FROM `accounts` WHERE `username` =" . $username;
         $_SESSION['player'] = db_select($query)[0];
@@ -73,7 +73,7 @@ function db_signin($username, $password)
         // verify password
         $x = password_verify($password, $result[0]['password']);
         if ($x) {
-            $query = "UPDATE `accounts` SET `roomID` = NULL WHERE `username` =" . $username;
+            $query = "UPDATE `accounts` SET `roomID` = NULL ,`amount` = 100 WHERE `username` =" . $username;
             $result = db_query($query);
             $query = "SELECT * FROM `accounts` WHERE `username` =" . $username;
             $result = db_select($query);
