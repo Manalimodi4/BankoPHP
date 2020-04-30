@@ -194,15 +194,24 @@ function observeRoom(roomID) {
             }
             if (data.potBalance == 0) {
                 localStorage.setItem('previousPotBalance', 0);
+                casino = document.querySelector("#casino");
+                casino.classList.add("d-none");
+                casino.classList.remove("d-block");
+                endGameHandler = document.querySelector("#endGameHandler");
+                endGameHandler.classList.add("d-flex");
+                endGameHandler.classList.remove("d-none");
             }
             if (data.potBalance > 0) {
                 previousPotBalance = localStorage.getItem('previousPotBalance');
                 if (previousPotBalance == 0) {
-                    displayNewGame();
-                    localStorage.setItem('gameEnded', null);
+                    casino = document.querySelector("#casino");
+                    casino.classList.remove("d-none");
+                    casino.classList.add("d-block");
                     endGameHandler = document.querySelector("#endGameHandler");
                     endGameHandler.classList.remove("d-flex");
                     endGameHandler.classList.add("d-none");
+                    localStorage.setItem('gameEnded', null);
+                    updateLeaderBoard();
                 }
             }
         },
