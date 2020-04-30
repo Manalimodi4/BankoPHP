@@ -40,8 +40,8 @@ $_SESSION['rooms'] = $result[0];
         <section class="flex-fill align-self-center">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-6  col-md-7  col-sm-12 mb-3">
-                        <div class="card py-4 rounded-xl">
+                    <div class="col-lg-6  col-md-7  col-sm-12 mb-3" id="casinoContainer">
+                        <div class="card py-4 rounded-xl" id="casino">
                             <div class="container-fluid">
                                 <div class="row ">
                                     <div class="cardRevealOverlay flex-column">
@@ -115,6 +115,14 @@ $_SESSION['rooms'] = $result[0];
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="card py-4 p-3 rounded-xl d-none" id="endGameHandler">
+                            <div class="display-4 ">
+                               Game Over!
+                            </div>
+                            <div class=" pl-2" id="gamePrompt">
+                                
                             </div>
                         </div>
                     </div>

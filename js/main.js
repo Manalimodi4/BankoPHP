@@ -125,21 +125,23 @@ function observeRoom(roomID) {
         //timeout: 500,     // timeout milliseconds
         success: function(data, status, xhr) { // success callback function
             players = JSON.parse(data.players);
-            potBalance.innerText = data.potBalance;
+            if (potBalance != null)
+                potBalance.innerText = data.potBalance;
             previousPlayer = localStorage.getItem('previousPlayer');
             if (previousPlayer != data.isPlaying) {
                 updateLeaderBoard(roomID);
             }
             betBtn = document.querySelector("#betBtn");
-            if (data.action <= 0) {
-                betBtn.disabled = true;
-            } else {
-                betBtn.disabled = false;
+            if (betBtn != null) {
+                if (data.action <= 0) {
+                    betBtn.disabled = true;
+                } else {
+                    betBtn.disabled = false;
+                }
             }
 
             localBetResult = localStorage.getItem('betResult');
             if (localBetResult != data.betResult) {
-
                 localStorage.setItem('betResult', data.betResult);
                 betResult = JSON.parse(data.betResult);
                 revealCard(betResult);
@@ -147,31 +149,62 @@ function observeRoom(roomID) {
             }
             isPlaying2.innerText = data.isPlaying;
             localStorage.setItem('previousPlayer', data.isPlaying);
-            if (data.action >= 0)
-                bet.innerText = data.action;
-            else
-                bet.innerText = 0;
-            if (data.isPlaying == username2) {
-                buttonHolder.classList.add("d-flex");
-                buttonHolder.classList.remove("d-none");
-                add.classList.add("d-block");
-                add.classList.remove("d-none");
-                sub.classList.add("d-block");
-                sub.classList.remove("d-none");
-                bet.classList.remove("w-50");
-                potBalance.classList.add("w-50");
-            } else {
-                buttonHolder.classList.add("d-none");
-                buttonHolder.classList.remove("d-flex");
-                add.classList.remove("d-block");
-                add.classList.add("d-none");
-                sub.classList.remove("d-block");
-                sub.classList.add("d-none");
-                bet.classList.add("w-50");
-                potBalance.classList.add("w-50");
-                betResult = JSON.parse(data.betResult);
+            if (bet != null)
+                if (data.action >= 0)
+                    bet.innerText = data.action;
+                else
+                    bet.innerText = 0;
+            if (buttonHolder != null) {
+                if (data.isPlaying == username2) {
+                    buttonHolder.classList.add("d-flex");
+                    buttonHolder.classList.remove("d-none");
+                    add.classList.add("d-block");
+                    add.classList.remove("d-none");
+                    sub.classList.add("d-block");
+                    sub.classList.remove("d-none");
+                    bet.classList.remove("w-50");
+                    potBalance.classList.add("w-50");
+                } else {
+                    buttonHolder.classList.add("d-none");
+                    buttonHolder.classList.remove("d-flex");
+                    add.classList.remove("d-block");
+                    add.classList.add("d-none");
+                    sub.classList.remove("d-block");
+                    sub.classList.add("d-none");
+                    bet.classList.add("w-50");
+                    potBalance.classList.add("w-50");
+                    betResult = JSON.parse(data.betResult);
+                }
             }
-
+            if (data.potBalance <= 0) {
+                casino = document.querySelector("#casino");
+                if (casino != null) {
+                    casino.classList.add("d-none");
+                    endGameHandler = document.querySelector("#endGameHandler");
+                    endGameHandler.classList.remove("d-none");;
+                    endGameHandler.classList.add("d-flex");
+                    gamePrompt = document.querySelector("#gamePrompt");
+                    username2 = document.querySelector("#username");
+                    username2 = username2.innerText;
+                    if (data.isAdmin == username2) {
+                        gamePrompt.innerHTML = '<button class="btn btn-dark mt-2" onclick="restartPotEvent()">Restart</button>';
+                    } else
+                        gamePrompt.innerHTML = '<div class="my-2">Waiting for admin to restart the game</div>';
+                }
+            }
+            if (data.potBalance == 0) {
+                localStorage.setItem('previousPotBalance', 0);
+            }
+            if (data.potBalance > 0) {
+                previousPotBalance = localStorage.getItem('previousPotBalance');
+                if (previousPotBalance == 0) {
+                    displayNewGame();
+                    localStorage.setItem('gameEnded', null);
+                    endGameHandler = document.querySelector("#endGameHandler");
+                    endGameHandler.classList.remove("d-flex");
+                    endGameHandler.classList.add("d-none");
+                }
+            }
         },
         error: function(textStatus, errorMessage) { // error callback 
             // console.log(jqxhr);
@@ -179,6 +212,22 @@ function observeRoom(roomID) {
             console.log(errorMessage);
         }
     });
+
+}
+
+function restartPotEvent() {
+    localStorage.getItem('initialisePot') == null;
+    initialisePotEvent();
+    localStorage.setItem('initialisePot', true);
+}
+
+function displayNewGame() {
+    casino = document.querySelector("#casino");
+    casino.classList.remove("d-none");
+    casino.classList.add("d-block");
+    endGameHandler = document.querySelector("#endGameHandler");
+    endGameHandler.classList.remove("d-flex");
+    endGameHandler.classList.add("d-none");
 }
 
 function observeRoomStart(roomID, username) {
@@ -226,18 +275,20 @@ function renderCards(roomID, username) {
                 var value = document.createElement("div");
                 var suit = document.createElement("div");
 
-                card.className = "card1 shadow-lg";
-                card.id = "card" + i;
-                value.className = "value";
-                value.id = "value" + i;
+                if (suit != null) {
+                    card.className = "card1 shadow-lg";
+                    card.id = "card" + i;
+                    value.className = "value";
+                    value.id = "value" + i;
 
-                suit.className = "suit " + myDeckJSON[(deckIndex + i)].substr(2);
-                suit.id = "suit" + i;
-                value.innerHTML = myDeckJSON[(deckIndex + i)].substr(0, 2);
-                card.appendChild(value);
-                card.appendChild(suit);
+                    suit.className = "suit " + myDeckJSON[(deckIndex + i)].substr(2);
+                    suit.id = "suit" + i;
+                    value.innerHTML = myDeckJSON[(deckIndex + i)].substr(0, 2);
+                    card.appendChild(value);
+                    card.appendChild(suit);
 
-                document.getElementById("stage").appendChild(card);
+                    document.getElementById("stage").appendChild(card);
+                }
 
             }
         },
@@ -265,9 +316,10 @@ function updateCards(roomID, username) {
                 var value = document.getElementById("value" + i);
                 var suit = document.getElementById("suit" + i);
 
-                suit.className = "suit " + myDeckJSON[(deckIndex + i)].substr(2);
-                value.innerHTML = myDeckJSON[(deckIndex + i)].substr(0, 2);
-
+                if (value != null) {
+                    suit.className = "suit " + myDeckJSON[(deckIndex + i)].substr(2);
+                    value.innerHTML = myDeckJSON[(deckIndex + i)].substr(0, 2);
+                }
             }
         },
         error: function(textStatus, errorMessage) { // error callback 
@@ -449,9 +501,6 @@ function actionBanko() {
 
             betResult = JSON.parse(betResult);
             revealCard(betResult);
-
-            if (data.betResult.betCompareResult == true)
-                handleGameRestart(roomID);
         },
         error: function(textStatus, errorMessage) { // error callback 
             console.log("Banko Action Failed: " + errorMessage);
