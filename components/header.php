@@ -21,7 +21,6 @@ $config2 = parse_ini_file('db/config.ini');
             grecaptcha.execute(<?php echo $config2['sitekey'] ?>, {
                 action: 'homepage'
             }).then(function(token) {
-                console.log(token);
                 document.getElementById("token").value = token;
             });
         });
