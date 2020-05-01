@@ -1,3 +1,9 @@
+<?php 
+$config2 = parse_ini_file('db/config.ini');
+?>
+
+
+
 <!doctype html>
 <html lang="en" class="h-100">
 
@@ -12,6 +18,17 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
     <title>Banko Game</title>
+    <script src="https://www.google.com/recaptcha/api.js?render=<?php echo $config2['sitekey']?>"></script>
+    <script>
+        grecaptcha.ready(function() {
+            grecaptcha.execute(<?php echo $config2['sitekey'] ?>, {
+                action: 'homepage'
+            }).then(function(token) {
+                console.log(token);
+                document.getElementById("token").value = token;
+            });
+        });
+    </script>
 </head>
 
 <body class="h-100">
@@ -24,5 +41,6 @@
             if($_SERVER['PHP_SELF'] != "/bankoPHP/index.php")
             echo '<div class="ok"><a class="btn px-3 btn-outline-danger" href="signout.php">Sign Out</a></div>';
             ?>
+            <input type="hidden" name="token" value="" id="token">
         </nav>
     </header>

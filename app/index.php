@@ -119,10 +119,10 @@ $_SESSION['rooms'] = $result[0];
                         </div>
                         <div class="card py-4 p-3 rounded-xl d-none" id="endGameHandler">
                             <div class="display-4 ">
-                               Game Over!
+                                Game Over!
                             </div>
                             <div class=" pl-2" id="gamePrompt">
-                                
+
                             </div>
                         </div>
                     </div>
