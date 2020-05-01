@@ -77,10 +77,11 @@ if (isset($_POST['signin'])) {
 <script src="https://www.google.com/recaptcha/api.js?render=<?php echo $config2['sitekey'] ?>"></script>
 <script>
     grecaptcha.ready(function() {
-        grecaptcha.execute(<?php echo $config2['sitekey'] ?>, {
+        grecaptcha.execute('<?php echo $config2['sitekey']?>', {
             action: 'homepage'
         }).then(function(token) {
-            document.getElementById("token").value = token;
+            tokenInput = document.getElementById("token");
+            tokenInput.value = token;
         });
     });
 </script>
