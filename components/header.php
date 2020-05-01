@@ -15,6 +15,19 @@ $config2 = parse_ini_file('db/config.ini');
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
     <title>Banko Game</title>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-165273840-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-165273840-1');
+    </script>
+
 </head>
 
 <body class="h-100">
