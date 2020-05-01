@@ -15,16 +15,6 @@ $config2 = parse_ini_file('db/config.ini');
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
     <title>Banko Game</title>
-    <script src="https://www.google.com/recaptcha/api.js?render=<?php echo $config2['sitekey'] ?>"></script>
-    <script>
-        grecaptcha.ready(function() {
-            grecaptcha.execute(<?php echo $config2['sitekey'] ?>, {
-                action: 'homepage'
-            }).then(function(token) {
-                document.getElementById("token").value = token;
-            });
-        });
-    </script>
 </head>
 
 <body class="h-100">
