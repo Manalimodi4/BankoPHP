@@ -6,7 +6,7 @@ if (isset($_POST['signin'])) {
     //recapcha starts 
     $url = "https://www.google.com/recaptcha/api/siteverify";
     $data = [
-        'secret' =>$config2['secretkey'],
+        'secret' =>  $config2['secretkey'],
         'response' => $_POST['token'],
     ];
     $options = array(
@@ -59,7 +59,6 @@ if (isset($_POST['signin'])) {
                                     </script>
                                     <div class="form-group pt-2 py-0">
                                         <input type="submit" name="signin" class="btn btn-primary btn-block" value="Log In">
-
                                     </div>
                                 </form>
                             </div>
