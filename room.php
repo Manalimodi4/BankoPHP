@@ -64,7 +64,8 @@ if (isset($_POST['startGame'])) {
                                     ?>
 
                                     <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
-                                        <input type="submit" name="inviteFriends" value="Invite Friends" class="btn btn-secondary mb-2 btn-block">
+                                        <a href="whatsapp://send?text=Join my room <?php echo $_SESSION['player']['roomID'] ?>on bankogame.online!"  name="inviteFriends" value="Invite Friends" class="btn btn-secondary mb-2 btn-block" data-action="share/whatsapp/share">Invite friends</a>
+
                                     </form>
                                 </div>
                                 <div class="col-md-6">
