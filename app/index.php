@@ -38,6 +38,7 @@ $_SESSION['rooms'] = $result[0];
 </head>
 
 <body>
+
     <header role="navbar">
         <nav class="navbar bg-white fixed-top">
             <div class="navbar-brand ">
@@ -46,7 +47,7 @@ $_SESSION['rooms'] = $result[0];
 
             <div class="ok">
                 <!-- <button class="btn btn-dark" onclick="shuffle()">Shuffle</button> -->
-                <a class="btn px-3 btn-outline-danger" href="../signout.php">Sign Out</a></div>
+                <a class="btn px-3 btn-outline-danger signout" href="../signout.php">Sign Out</a></div>
         </nav>
     </header>
     <main class="d-flex" style="padding-top: 80px;">
@@ -54,6 +55,7 @@ $_SESSION['rooms'] = $result[0];
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-6  col-md-7  col-sm-12 mb-3" id="casinoContainer">
+                        
                         <div class="card py-4 rounded-xl" id="casino">
                             <div class="container-fluid">
                                 <div class="row ">
@@ -116,7 +118,7 @@ $_SESSION['rooms'] = $result[0];
                                     <div class="col-sm-12 my-3 mt-4 d-flex justify-content-around" id="buttonHolder">
                                         <button type="button" class="btn btn-warning px-3" onclick="actionPass()" id="passBtn">Pass</button>
                                         <button type="button" class="btn btn-dark px-3" onclick="actionBet()" id="betBtn">Bet</button>
-                                        <button type="button" class="btn btn-danger px-3" onclick="actionBanko()" id="bancoBtn">Banco</button>
+                                        <button type="button" class="btn btn-danger px-3" onclick="actionBanko()" id="bancoBtn">Banko</button>
                                     </div>
                                     <div class="col-sm-12 my-3 mt-4 d-flex justify-content-around" id="playerHolder">
                                         <div class="container-fluid">

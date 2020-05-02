@@ -1,3 +1,11 @@
+canvas {
+    overflow-y: hidden;
+    overflow-x: hidden;
+    width: 100%;
+    margin: 0;
+    position: absolute;
+}
+
 .fs-2 {
     font-size: 2rem !important;
 }
@@ -10,14 +18,87 @@
     font-size: 1rem !important;
 }
 
+.btn {
+    background-color: #89216b !important;
+    border-color: #89216b !important;
+    color: white !important;
+}
+
+.btn:active {
+    border-color: #89216b !important;
+}
+
+.btn:focus {
+    box-shadow: 0 0 0 0.2rem #89216b44 !important;
+    border-color: #89216b !important;
+}
+
+#passBtn {
+    background-color: #ffc107 !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+#passBtn:active,
+#betBtn:active,
+#bancoBtn:active,
+#pot:active,
+.signout:active {
+    border-color: transparent !important;
+}
+
+#passBtn:focus,
+#betBtn:focus,
+#bancoBtn:focus,
+#pot:focus,
+.signout:focus {
+    box-shadow: none !important;
+    border-color: transparent !important;
+}
+
+#betBtn {
+    background-color: #343a40 !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+#bancoBtn {
+    background-color: #dc3545 !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+#pot {
+    background-color: #28a745 !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.signout {
+    background-color: #e83e8c !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
 body {
-    background: linear-gradient(135deg, #708090 21px, #d9ecff 22px, #d9ecff 24px, transparent 24px, transparent 67px, #d9ecff 67px, #d9ecff 69px, transparent 69px), linear-gradient(225deg, #708090 21px, #d9ecff 22px, #d9ecff 24px, transparent 24px, transparent 67px, #d9ecff 67px, #d9ecff 69px, transparent 69px)0 64px;
-    background-color: #708090;
-    background-size: 64px 128px;
+    /* background: linear-gradient(135deg, #708090 21px, #d9ecff 22px, #d9ecff 24px, transparent 24px, transparent 67px, #d9ecff 67px, #d9ecff 69px, transparent 69px), linear-gradient(225deg, #708090 21px, #d9ecff 22px, #d9ecff 24px, transparent 24px, transparent 67px, #d9ecff 67px, #d9ecff 69px, transparent 69px)0 64px; */
+    /* background-color: purple; */
+    /* background-size: 64px 128px; */
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#89216b+0,da4453+0,89216b+100,89216b+100 */
+    background: #89216b;
+    /* Old browsers */
+    background: -moz-radial-gradient(center, ellipse cover, #89216b 0%, #da4453 0%, #89216b 100%, #89216b 100%);
+    /* FF3.6-15 */
+    background: -webkit-radial-gradient(center, ellipse cover, #89216b 0%, #da4453 0%, #89216b 100%, #89216b 100%);
+    /* Chrome10-25,Safari5.1-6 */
+    background: radial-gradient(ellipse at center, #89216b 0%, #da4453 0%, #89216b 100%, #89216b 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#89216b', endColorstr='#89216b', GradientType=1);
+    /* IE6-9 fallback on horizontal gradient */
 }
 
 .bg-white {
-    background-color: #fff !important;
+    background-color: transparent !important;
 }
 
 .rounded-xl {

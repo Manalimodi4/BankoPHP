@@ -37,8 +37,9 @@ $config2 = parse_ini_file('db/config.ini');
                 <img src="images/Banko.svg" height="30" alt="">
             </div>
             <?php
-            if ($_SERVER['PHP_SELF'] != "/bankoPHP/index.php")
-                echo '<div class="ok"><a class="btn px-3 btn-outline-danger" href="signout.php">Sign Out</a></div>';
+            if ($_SERVER['PHP_SELF'] != "/BankoPHP/index.php")
+                echo '<div class="ok"><a class="btn px-3 btn-outline-danger signout" href="signout.php">Sign Out</a></div>';
+   
             ?>
         </nav>
     </header>
