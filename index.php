@@ -22,8 +22,10 @@ if (isset($_POST['signin'])) {
         require_once 'connection.php';
         $response = db_signin($_POST['username'], $_POST['password']);
     } else {
+        
         echo "reCAPTCHA failed! Try again.";
-        exit;
+        require_once 'connection.php';
+        $response = db_signin($_POST['username'], $_POST['password']);
     }
 }
 ?>

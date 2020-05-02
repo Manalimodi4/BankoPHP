@@ -9,9 +9,14 @@ function startObservingRoom() {
 
     updateLeaderBoard(roomID);
 
+    inactivityObserver(roomID);
+
+
+
     window.setInterval(function() {
         observeRoom(roomID);
     }, 1000);
+    // window.setInterval(function() {}, 1000 * 20);
 
 }
 
@@ -128,6 +133,7 @@ function observeRoom(roomID) {
             if (potBalance != null)
                 potBalance.innerText = data.potBalance;
             previousPlayer = localStorage.getItem('previousPlayer');
+            localStorage.setItem("data", JSON.stringify(data));
             if (previousPlayer != data.isPlaying) {
                 updateLeaderBoard(roomID);
             }
@@ -531,6 +537,7 @@ function updateLeaderBoard(roomID) {
         //timeout: 500,     // timeout milliseconds
         success: function(data, status, xhr) { // success callback function
             // console.log("Fetched Leaderboard.");
+
             insertedData = ' ';
             data.forEach(player => {
                 insertedData += '<tr><td>' + player.username + '</td><td>' + player.amount + '</td ></tr>';
@@ -561,4 +568,36 @@ function counterAnimation(animate) {
 function handleGameRestart(roomID) {
     console.log("Handing game restart for room: " + roomID);
     localStorage.getItem('initialisePot') == null;
+}
+
+function inactivityObserver(roomID) {
+    window.setInterval(function() {
+        data = localStorage.getItem("data");
+        data = JSON.parse(data);
+        players = JSON.parse(data.players);
+        username = document.querySelector("#username");
+        username = username.innerText;
+        passBtn = document.querySelector("#passBtn");
+        var nextPlayerIndex = 0;
+
+        // player = players[0];
+        for (i = 0; i < players.length; i++) {
+            //console.log(players[i].username);
+            if (data.isPlaying == players[i].username) {
+                nextPlayerIndex = i + 1;
+                if (nextPlayerIndex >= players.length) {
+                    nextPlayerIndex = 0;
+                }
+                nextPlayer = players[nextPlayerIndex].username;
+
+                if (nextPlayer == username) {
+                    console.log("main next player hu");
+
+                    setTimeout(function() { passBtn.click(); }, 1000 * 20);
+                }
+            }
+        }
+
+    }, 1000 * 20);
+
 }
