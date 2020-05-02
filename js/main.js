@@ -311,7 +311,7 @@ function renderCards(roomID, username) {
             // console.log(jqxhr);
             console.log(textStatus);
             console.log(errorMessage);
-            window.alert("not working");
+            //window.alert("not working");
         }
     });
 }
@@ -341,7 +341,7 @@ function updateCards(roomID, username) {
             // console.log(jqxhr);
             console.log(textStatus);
             console.log(errorMessage);
-            window.alert("Update card not working");
+            //window.alert("Update card not working");
         }
     });
 }
