@@ -9,7 +9,7 @@ function startObservingRoom() {
 
     updateLeaderBoard(roomID);
 
-    inactivityObserver(roomID);
+    // inactivityObserver(roomID);
 
 
 
